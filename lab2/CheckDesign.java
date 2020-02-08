@@ -5,12 +5,10 @@ import java.lang.reflect.Constructor;
 
 /*
    - Cruise
-   - [ ] must contain only private fields
-   - [ ] must contain only final fields
+   - [x] must contain only private and final fields
 
    - Loader
-   - [ ] must not contain public members
-   - [ ] must contain only final fields
+   - [x] must contain only private and final fields
    - [ ] must contain one instance of serve method only (no overloading)
    - [ ] must contain one instance of canServe method only (no overloading)
 
@@ -40,6 +38,14 @@ class CheckDesign {
 
     //
     try {
+		// Cruise
+		Pakej.mustHavePrivateAndFinalFields("Cruise");
+
+		// Loader
+		Pakej.mustHavePrivateAndFinalFields("Loader");
+
+
+		// Others
         Pakej.mustHaveCommonParent("SmallCruise", "BigCruise");
         Pakej.mustBeChildOf("SmallCruise", "Cruise");
         Pakej.mustBeChildOf("BigCruise", "Cruise");
