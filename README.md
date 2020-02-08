@@ -8,8 +8,8 @@
 Script will check design for all folders within the lab folder specified. Each folder represents one submission.
 
 ### Project Structure
-- `Kelas.java`: Class wrapper
-- `Pakej.java`: Helper methods
+- `Kelas.java` - Class wrapper
+- `Pakej.java` - Helper methods
 - :file_folder: *lab*
   - `CheckDesign.java` - Define lab checks
   - :file_folder: *Submission1*
