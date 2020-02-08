@@ -1,4 +1,4 @@
-# `Kelas`
+# Kelas
 
 ## Simplified Java Reflection for Auto-Assessment of Program Design
 
@@ -6,11 +6,12 @@
 `bash check_all.sh <folder-name ie "lab2">`
 
 Script will check design for all folders within the lab folder specified. Each folder represents one submission.
+If you stop the script halfway, make sure to delete all class files before running the script again, or the symbolic links will fail.
 
 ### Project Structure
 - `Kelas.java` - Class wrapper
 - `Pakej.java` - Helper methods
-- :file_folder: *lab*
+- :open_file_folder: *lab*
   - `CheckDesign.java` - Define lab checks
   - :file_folder: *Submission1*
   - :file_folder: *Submission2*
