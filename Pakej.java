@@ -47,8 +47,9 @@ class Pakej {
     public static void mustHavePrivateAndFinalFields(String name) {
         try {
             Kelas kelas = new Kelas(name);
-            List<Field> list = kelas.getFields()
+            List<Field> list = kelas.getAllFields()
                     .stream()
+                    //.peek(System.out::println)
                     .filter(f -> !Modifier.isPrivate(f.getModifiers()) || !Modifier.isFinal(f.getModifiers()))
                     .collect(Collectors.toList());
 
