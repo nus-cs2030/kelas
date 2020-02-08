@@ -18,6 +18,6 @@ do
 	fi
 	ln -s ../$i .
 done
-java CheckDesign #| tee $userid.design-bug.txt
+java CheckDesign | tee $userid.design-bug.txt
 rm *.class
 cd ..

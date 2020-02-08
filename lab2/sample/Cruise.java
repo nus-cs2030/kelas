@@ -3,7 +3,7 @@ class Cruise {
   private final int arrivalTime;
   private final int numOfLoader;
   private final int serviceTime;
-  
+
   protected Cruise(String id, int arrivalTime, int numOfLoader, int serviceTime) {
     this.id = id;
     this.arrivalTime = arrivalTime;
@@ -22,9 +22,9 @@ class Cruise {
   public int getServiceTime() {
     return serviceTime;
   }
-  
+
   public int getServiceCompletionTime() {
-    return getArrivalTime() + getServiceTime(); 
+    return getArrivalTime() + getServiceTime();
   }
 
   public String toString() {
