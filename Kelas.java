@@ -43,14 +43,14 @@ class Kelas {
      * @return A list of instance fields.
      */
     public List<Field> getFields() {
-        return Stream.of(this.c.getFields())
+        return Stream.of(this.c.getDeclaredFields())
             .filter(f -> !Modifier.isStatic(f.getModifiers()))
             .filter(f -> !Modifier.isFinal(f.getModifiers()))
             .collect(Collectors.toList());
     }
 
     public List<Field> getAllFields() {
-        return Stream.of(this.c.getFields())
+        return Stream.of(this.c.getDeclaredFields())
             .collect(Collectors.toList());
     }
 
@@ -64,7 +64,7 @@ class Kelas {
      * @return A list of public fields.
      */
     public List<Field> getPublicFields() {
-        return Stream.of(this.c.getFields())
+        return Stream.of(this.c.getDeclaredFields())
             .filter(f -> Modifier.isPublic(f.getModifiers()))
             .filter(f -> !Modifier.isStatic(f.getModifiers()))
             .filter(f -> !Modifier.isFinal(f.getModifiers()))
@@ -81,7 +81,7 @@ class Kelas {
      * @return A list of public fields.
      */
     public List<Field> getPrivateFields() {
-        return Stream.of(this.c.getFields())
+        return Stream.of(this.c.getDeclaredFields())
             .filter(f -> Modifier.isPrivate(f.getModifiers()))
             .filter(f -> !Modifier.isStatic(f.getModifiers()))
             .filter(f -> !Modifier.isFinal(f.getModifiers()))
@@ -97,7 +97,7 @@ class Kelas {
      * @return A list of public static final fields.
      */
     public List<Field> getConstants() {
-        return Stream.of(this.c.getFields())
+        return Stream.of(this.c.getDeclaredFields())
             .filter(f -> Modifier.isPublic(f.getModifiers()) &&
                     Modifier.isStatic(f.getModifiers()) &&
                     Modifier.isFinal(f.getModifiers()))

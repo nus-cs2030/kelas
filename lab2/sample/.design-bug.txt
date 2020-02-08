@@ -1,2 +1,3 @@
-HELLO
-HELLO
+private int Cruise.arrivalTime
+Cruise: contains non private and non final fields:
+ - private int Cruise.arrivalTime
