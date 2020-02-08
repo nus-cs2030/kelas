@@ -51,7 +51,6 @@ class Kelas {
 
     public List<Field> getAllFields() {
         return Stream.of(this.c.getFields())
-            .peek(System.out::println)
             .collect(Collectors.toList());
     }
 
