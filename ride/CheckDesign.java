@@ -87,10 +87,10 @@ class CheckDesign {
     }
   }
 
-  public static void mustDefineConstantWithValue(String name, int n)
+  public static void mustDefineConstantWithTypeValue(String name, int n)
       throws ClassNotFoundException {
     Kelas k = new Kelas(name);
-    if (!k.hasIntConstantFieldWithValue(n)) {
+    if (!k.hasConstantFieldWithTypeValue(int.class, n)) {
       System.out.println(name + " does not have a const with value " + n);
     }
   }
@@ -101,7 +101,7 @@ class CheckDesign {
     boolean found = false;
     String msg = name + ": no const with value(s) ";
     for (int i : values) { 
-      if (!k.hasIntConstantFieldWithValue(i)) {
+      if (!k.hasConstantFieldWithTypeValue(int.class, i)) {
         msg += i + ", ";
         found = true;
       }

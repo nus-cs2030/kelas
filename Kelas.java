@@ -62,6 +62,7 @@ class Kelas {
   }
 
   /**
+   * Maybe deprecate?
    * Return true if the class as an int constant field with given
    * value.
    * @return A list of public static final fields.
@@ -71,6 +72,25 @@ class Kelas {
       List<Field> consts = getConstants();
       for (Field f : consts) {
         if (f.getType() == int.class && f.getInt(null) == value) {
+          return true;
+        }
+      }
+      return false;
+    } catch (IllegalAccessException e) {
+      return false;
+    }
+  }
+
+
+    /**
+   * Return true if a constant field is found with given type and value
+   * @return A list of public static final fields.
+   */
+  public <T> boolean hasConstantFieldWithTypeValue(Class<T> type, T value) {
+    try {
+      List<Field> consts = getConstants();
+      for (Field f : consts) {
+        if (f.getType() == type && type.cast(f.get(null)).equals(value)) {
           return true;
         }
       }
