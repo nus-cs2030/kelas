@@ -9,8 +9,8 @@ import java.lang.reflect.Constructor;
 
    - Loader
    - [x] must contain only private and final fields
-   - [ ] must contain one instance of serve method only (no overloading)
-   - [ ] must contain one instance of canServe method only (no overloading)
+   - [x] must contain one instance of serve method only (no overloading)
+   - [x] must contain one instance of canServe method only (no overloading)
 
    - SmallCruise
    - [x] must inherit from Cruise
@@ -34,21 +34,24 @@ class CheckDesign {
 
     // Preliminary checks
     Pakej.checkIfClassesExist(classes);
-    Pakej.checkPublicFields(classes);
 
-    //
+    // Main checks
     try {
 		// Cruise
 		Pakej.mustHavePrivateAndFinalFields("Cruise");
+		Pakej.mustHaveCommonParent("SmallCruise", "BigCruise");
 
 		// Loader
 		Pakej.mustHavePrivateAndFinalFields("Loader");
+		Pakej.mustNotHaveExtraMethods("Loader", "serve", "canServe");
 
+		// SmallCruise
+		Pakej.mustBeChildOf("SmallCruise", "Cruise");
+        Pakej.mustDefineConstantWithValue("SmallCruise", 1, 30);
 
-		// Others
-        Pakej.mustHaveCommonParent("SmallCruise", "BigCruise");
-        Pakej.mustBeChildOf("SmallCruise", "Cruise");
-        Pakej.mustBeChildOf("BigCruise", "Cruise");
+		// BigCruise
+		Pakej.mustBeChildOf("BigCruise", "Cruise");
+        Pakej.mustDefineConstantWithValue("BigCruise", 40, 50);
     } catch (ClassNotFoundException e) {
 
     }
