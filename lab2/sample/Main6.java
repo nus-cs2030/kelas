@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-class Main {
+class Main6 {
   public static int MAX_LOADER = 9;
   public static int MAX_CRUISE = 30;
 
@@ -47,7 +47,7 @@ class Main {
       }
 
       findLoaders(c, loaders);
-      
+
     }
     sc.close();
   }
