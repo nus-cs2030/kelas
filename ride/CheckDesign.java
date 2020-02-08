@@ -87,7 +87,7 @@ class CheckDesign {
     }
   }
 
-  public static void mustDefineConstantWithTypeValue(String name, int n)
+  public static void mustDefineConstantWithValue(String name, int n)
       throws ClassNotFoundException {
     Kelas k = new Kelas(name);
     if (!k.hasConstantFieldWithTypeValue(int.class, n)) {
