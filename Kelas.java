@@ -38,6 +38,22 @@ class Kelas {
   }
 
   /**
+   * Return a list of fields defined in this class, excluding
+   * constants defined as static or final.
+   * @return A list of instance fields.
+   */
+  public List<Field> getFields() {
+    return Stream.of(this.c.getFields())
+      .filter(f -> !Modifier.isStatic(f.getModifiers()))
+      .filter(f -> !Modifier.isFinal(f.getModifiers()))
+      .collect(Collectors.toList());
+  }
+
+  public boolean containsFields() {
+    return !this.getFields().isEmpty();
+  }
+
+  /**
    * Return a list of public fields defined in this class, excluding
    * constants defined as public static final.
    * @return A list of public fields.
@@ -45,12 +61,13 @@ class Kelas {
   public List<Field> getPublicFields() {
     return Stream.of(this.c.getFields())
       .filter(f -> Modifier.isPublic(f.getModifiers()))
-      .filter(f -> (!Modifier.isStatic(f.getModifiers()) || !Modifier.isFinal(f.getModifiers())))
+      .filter(f -> !Modifier.isStatic(f.getModifiers()))
+      .filter(f -> !Modifier.isFinal(f.getModifiers()))
       .collect(Collectors.toList());
   }
 
-  public boolean containsPublicField() {
-    return this.getPublicFields().isEmpty();
+  public boolean containsPublicFields() {
+    return !this.getPublicFields().isEmpty();
   }
 
   /**
@@ -61,8 +78,13 @@ class Kelas {
   public List<Field> getPrivateFields() {
     return Stream.of(this.c.getFields())
       .filter(f -> Modifier.isPrivate(f.getModifiers()))
-      .filter(f -> (!Modifier.isStatic(f.getModifiers()) || !Modifier.isFinal(f.getModifiers())))
+      .filter(f -> !Modifier.isStatic(f.getModifiers()))
+      .filter(f -> !Modifier.isFinal(f.getModifiers()))
       .collect(Collectors.toList());
+  }
+
+  public boolean containsPrivateFields() {
+    return !this.getPrivateFields().isEmpty();
   }
 
   /**
@@ -75,6 +97,28 @@ class Kelas {
           Modifier.isStatic(f.getModifiers()) &&
           Modifier.isFinal(f.getModifiers()))
       .collect(Collectors.toList());
+  }
+
+  public boolean containsConstants() {
+    return !this.getConstants().isEmpty();
+  }
+
+  /**
+   * Return true if a field is found with given type and value
+   * @return A list of fields.
+   */
+  public <T> boolean hasFieldWithTypeValue(Class<T> type, T value) {
+    try {
+      List<Field> fields = getFields();
+      for (Field f : fields) {
+        if (f.getType() == type && type.cast(f.get(null)).equals(value)) {
+          return true;
+        }
+      }
+      return false;
+    } catch (IllegalAccessException e) {
+      return false;
+    }
   }
 
   /**
@@ -96,9 +140,8 @@ class Kelas {
   }
 
   /**
-   * Checks if this class define any public fields. Constants defined as
-   * public static final does not count.
-   * @return true if such a public field is found.  false otherwise.
+   * Checks if class has a certain public method
+   * @return true if such a method is found.  false otherwise.
    */
   public boolean hasPublicMethod(String name, Class<?>... paramTypes) {
     try {
@@ -113,9 +156,8 @@ class Kelas {
   }
 
   /**
-   * Checks if this class define any public fields. Constants defined as
-   * public static final does not count.
-   * @return true if such a public field is found.  false otherwise.
+   * Get all methods
+   * @return list of methods.
    */
   public List<Method> getMethods() {
     return List.of(this.c.getDeclaredMethods());
