@@ -4,7 +4,6 @@ MYFILES="Kelas.class CheckDesign.class Pakej.class"
 lab=$1
 target=$2
 
-echo "Target directory: $target"
 cd $target
 
 javac *.java
@@ -16,4 +15,6 @@ do
 	fi
 	ln -s ../$i .
 done
+
 java CheckDesign | tee $userid.design-bug.txt
+rm *.class
