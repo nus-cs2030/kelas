@@ -28,7 +28,7 @@ class Pakej {
         for (String name : classes) {
             try {
                 Kelas kelas = new Kelas(name);
-                if (!kelas.containsNoPublicField()) {
+                if (!kelas.containsPublicField()) {
                     System.out.println(name + ": contains public fields:");
                     for (Field f : kelas.getPublicFields()) {
                         System.out.println(" - " + f);
