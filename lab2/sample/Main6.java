@@ -47,7 +47,7 @@ class Main6 {
       }
 
       findLoaders(c, loaders);
-      
+
     }
     sc.close();
   }
