@@ -44,11 +44,11 @@ class CheckDesign {
 
             // SmallCruise
             Pakej.mustBeChildOf("SmallCruise", "Cruise");
-            Pakej.mustDefineIntConstantWithValues("SmallCruise", 1, 30);
+            Pakej.mustDefinePrivateIntConstantWithValues("SmallCruise", 1, 30);
 
             // BigCruise
             Pakej.mustBeChildOf("BigCruise", "Cruise");
-            Pakej.mustDefineIntConstantWithValues("BigCruise", 40, 50);
+            Pakej.mustDefinePrivateIntConstantWithValues("BigCruise", 40, 50);
         } catch (ClassNotFoundException e) {
 
         }

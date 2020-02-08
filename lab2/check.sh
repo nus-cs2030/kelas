@@ -1,5 +1,7 @@
 #!/bin/bash
+
 MYFILES="Kelas.class CheckDesign.class Pakej.class"
+targetfolder=$1
 
 javac ../Kelas.java
 mv ../Kelas.class .
@@ -7,7 +9,8 @@ javac ../Pakej.java
 mv ../Pakej.class .
 javac CheckDesign.java
 
-cd sample
+cd $targetfolder
+
 javac *.java
 for i in $MYFILES
 do

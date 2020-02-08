@@ -1,2 +1,0 @@
-SmallCruise: no const with value(s) 1, 30
-BigCruise: no const with value(s) 40, 50

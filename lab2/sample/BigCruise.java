@@ -1,7 +1,7 @@
 class BigCruise extends Cruise {
 
-    final static int PASSENGERS_PER_MIN = 50;
-    final static int LENGTH_PER_LOADER = 40;
+    private final static int PASSENGERS_PER_MIN = 50;
+    private final static int LENGTH_PER_LOADER = 40;
 
     BigCruise(String id, int arrivalTime, int length, int numOfPassengers) {
         super(id, arrivalTime,

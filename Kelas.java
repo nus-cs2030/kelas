@@ -102,7 +102,7 @@ class Kelas {
      *
      * @return A list of public static final fields.
      */
-    public List<Field> getConstants() {
+    public List<Field> getPublicConstants() {
         return Stream.of(this.c.getDeclaredFields())
                 .filter(f -> Modifier.isPublic(f.getModifiers()) &&
                         Modifier.isStatic(f.getModifiers()) &&
@@ -110,8 +110,22 @@ class Kelas {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Return a list of private static final fields defined in this class.
+     *
+     * @return A list of private static final fields.
+     */
+    public List<Field> getPrivateConstants() {
+        return Stream.of(this.c.getDeclaredFields())
+                .filter(f -> Modifier.isPrivate(f.getModifiers()) &&
+                        Modifier.isStatic(f.getModifiers()) &&
+                        Modifier.isFinal(f.getModifiers()))
+
+                .collect(Collectors.toList());
+    }
+
     public boolean containsConstants() {
-        return !this.getConstants().isEmpty();
+        return !this.getPublicConstants().isEmpty();
     }
 
     /**
@@ -138,11 +152,26 @@ class Kelas {
      *
      * @return A list of public static final fields.
      */
-    public <T> boolean hasConstantFieldWithTypeValue(Class<T> type, T value) {
+    public <T> boolean hasPublicConstantFieldWithTypeValue(Class<T> type, T value) {
         try {
-            List<Field> consts = getConstants();
+            List<Field> consts = getPublicConstants();
             for (Field f : consts) {
                 if (f.getType() == type && type.cast(f.get(null)).equals(value)) {
+                    return true;
+                }
+            }
+            return false;
+        } catch (IllegalAccessException e) {
+            return false;
+        }
+    }
+
+    public <T> boolean hasPrivateConstantFieldWithTypeValue(Class<T> type, T value) {
+        try {
+            List<Field> consts = getPrivateConstants();
+            for (Field f : consts) {
+                f.setAccessible(true);
+                if (type.equals(f.get(null).getClass()) && type.cast(f.get(null)).equals(value)) {
                     return true;
                 }
             }

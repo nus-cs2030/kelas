@@ -156,18 +156,35 @@ class Pakej {
     public static void mustDefineConstantWithValue(String name, int n)
             throws ClassNotFoundException {
         Kelas k = new Kelas(name);
-        if (!k.hasConstantFieldWithTypeValue(int.class, n)) {
+        if (!k.hasPublicConstantFieldWithTypeValue(int.class, n)) {
             System.out.println(name + " does not have a const with value " + n);
         }
     }
 
-    public static void mustDefineIntConstantWithValues(String name, int... values)
+    public static void mustDefinePublicIntConstantWithValues(String name, int... values)
             throws ClassNotFoundException {
         Kelas k = new Kelas(name);
         boolean found = false;
         String msg = name + ": no const with value(s) ";
         for (int i : values) {
-            if (!k.hasConstantFieldWithTypeValue(int.class, i)) {
+            if (!k.hasPublicConstantFieldWithTypeValue(int.class, i)) {
+                msg += i + ", ";
+                found = true;
+            }
+        }
+        if (found) {
+            msg = msg.substring(0, msg.length() - 2);
+            System.out.println(msg);
+        }
+    }
+
+    public static void mustDefinePrivateIntConstantWithValues(String name, int... values)
+            throws ClassNotFoundException {
+        Kelas k = new Kelas(name);
+        boolean found = false;
+        String msg = name + ": no const with value(s) ";
+        for (int i : values) {
+            if (!k.hasPrivateConstantFieldWithTypeValue(Integer.class, i)) {
                 msg += i + ", ";
                 found = true;
             }
