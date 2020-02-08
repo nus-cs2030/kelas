@@ -49,7 +49,6 @@ class Pakej {
             Kelas kelas = new Kelas(name);
             List<Field> list = kelas.getFields()
                     .stream()
-                    .peek(System.out::println)
                     .filter(f -> !Modifier.isPrivate(f.getModifiers()) || !Modifier.isFinal(f.getModifiers()))
                     .collect(Collectors.toList());
 
