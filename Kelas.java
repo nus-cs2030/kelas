@@ -145,16 +145,17 @@ class Kelas {
     return false;
   }
 
-  public boolean isChildOf(Class<?> Parent) {
+  public boolean isChildOf(String Parent) throws ClassNotFoundException {
     if (this.c.getSuperclass().equals(Object.class)) {
       return false;
     }
-    if (this.c.getSuperclass().equals(Parent.class)) {
+    Class<?> parentClass = Class.forName(Parent);
+    if (this.c.getSuperclass().equals(parentClass)) {
       return true;
     }
 
     for (Class<?> ifs1 : this.c.getInterfaces()) {
-        if (ifs1.equals(Parent)) {
+        if (ifs1.equals(parentClass)) {
           return true;
         }
     }
@@ -232,5 +233,9 @@ class Kelas {
 
   public String toString() {
     return c.toString();
+  }
+
+  public boolean equals(Kelas k2) {
+      return c.equals(k2.c);
   }
 }

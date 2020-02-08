@@ -42,7 +42,7 @@ class CheckDesign {
     try {
         Pakej.mustHaveCommonParent("SmallCruise", "BigCruise");
         Pakej.mustBeChildOf("SmallCruise", "Cruise");
-        Pakej.mustBeChildOf("BigCruise", "Cruise")
+        Pakej.mustBeChildOf("BigCruise", "Cruise");
     } catch (ClassNotFoundException e) {
 
     }
