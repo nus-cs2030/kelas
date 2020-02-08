@@ -1,12 +1,11 @@
 #!/bin/bash
 MYFILES="Kelas.class CheckDesign.class Pakej.class"
-javac ../Kelas.java
 
-javac ../Pakej.java
+javac ../Kelas.java
 mv ../Kelas.class .
+javac ../Pakej.java
 mv ../Pakej.class .
 javac CheckDesign.java
-
 
 cd sample
 javac *.java
@@ -21,3 +20,4 @@ done
 java CheckDesign | tee $userid.design-bug.txt
 rm *.class
 cd ..
+rm *.class

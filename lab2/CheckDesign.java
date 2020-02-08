@@ -1,7 +1,4 @@
 import java.util.List;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.Constructor;
 
 /*
    - Cruise
@@ -25,36 +22,36 @@ import java.lang.reflect.Constructor;
 
 class CheckDesign {
 
-	public static void main(String[] args) {
-		List<String> classes = List.of(
-				"Cruise",
-				"BigCruise",
-				"SmallCruise",
-				"Loader");
+    public static void main(String[] args) {
+        List<String> classes = List.of(
+                "Cruise",
+                "BigCruise",
+                "SmallCruise",
+                "Loader");
 
-    // Preliminary checks
-    Pakej.checkIfClassesExist(classes);
+        // Preliminary checks
+        Pakej.checkIfClassesExist(classes);
 
-    // Main checks
-    try {
-		// Cruise
-		Pakej.mustHavePrivateAndFinalFields("Cruise");
-		Pakej.mustHaveCommonParent("SmallCruise", "BigCruise");
+        // Main checks
+        try {
+            // Cruise
+            Pakej.mustHavePrivateAndFinalFields("Cruise");
+            Pakej.mustHaveCommonParent("SmallCruise", "BigCruise");
 
-		// Loader
-		Pakej.mustHavePrivateAndFinalFields("Loader");
-		Pakej.mustNotHaveExtraMethods("Loader", "serve", "canServe");
+            // Loader
+            Pakej.mustHavePrivateAndFinalFields("Loader");
+            Pakej.mustNotHaveExtraMethods("Loader", "serve", "canServe");
 
-		// SmallCruise
-		Pakej.mustBeChildOf("SmallCruise", "Cruise");
-        Pakej.mustDefineConstantWithValue("SmallCruise", 1, 30);
+            // SmallCruise
+            Pakej.mustBeChildOf("SmallCruise", "Cruise");
+            Pakej.mustDefineIntConstantWithValues("SmallCruise", 1, 30);
 
-		// BigCruise
-		Pakej.mustBeChildOf("BigCruise", "Cruise");
-        Pakej.mustDefineConstantWithValue("BigCruise", 40, 50);
-    } catch (ClassNotFoundException e) {
+            // BigCruise
+            Pakej.mustBeChildOf("BigCruise", "Cruise");
+            Pakej.mustDefineIntConstantWithValues("BigCruise", 40, 50);
+        } catch (ClassNotFoundException e) {
+
+        }
 
     }
-
-	}
 }

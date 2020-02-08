@@ -1,3 +1,2 @@
-private int Cruise.arrivalTime
-Cruise: contains non private and non final fields:
- - private int Cruise.arrivalTime
+SmallCruise: no const with value(s) 1, 30
+BigCruise: no const with value(s) 40, 50

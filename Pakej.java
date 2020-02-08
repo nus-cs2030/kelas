@@ -1,17 +1,15 @@
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 import java.util.stream.Collectors;
 
 class Pakej {
     /**
      * Check if classes exist
-     * @param  classes                List<String> of class names to check for existence
+     *
+     * @param classes List<String> of class names to check for existence
      * @throws ClassNotFoundException Thrown if the class is not valid.
      */
     public static void checkIfClassesExist(List<String> classes) {
@@ -26,7 +24,8 @@ class Pakej {
 
     /**
      * Check if public fields exist
-     * @param  className              The name of the class.
+     *
+     * @param className The name of the class.
      * @throws ClassNotFoundException Thrown if the className is not valid.
      */
     public static void checkPublicFields(List<String> classes) {
@@ -49,10 +48,10 @@ class Pakej {
         try {
             Kelas kelas = new Kelas(name);
             List<Field> list = kelas.getFields()
-                                    .stream()
-                                    .peek(System.out::println)
-                                    .filter(f -> !Modifier.isPrivate(f.getModifiers()) || !Modifier.isFinal(f.getModifiers()))
-                                    .collect(Collectors.toList());
+                    .stream()
+                    .peek(System.out::println)
+                    .filter(f -> !Modifier.isPrivate(f.getModifiers()) || !Modifier.isFinal(f.getModifiers()))
+                    .collect(Collectors.toList());
 
             if (!list.isEmpty()) {
                 System.out.println(name + ": contains non private and non final fields:");
@@ -66,7 +65,7 @@ class Pakej {
     }
 
     public static void mustHaveCommonParent(String name1, String name2)
-        throws ClassNotFoundException {
+            throws ClassNotFoundException {
         Kelas k1 = new Kelas(name1);
         Kelas k2 = new Kelas(name2);
         if (!k1.shareCommonSupertypeWith(k2)) {
@@ -82,21 +81,20 @@ class Pakej {
     }
 
     public static void mustNotHaveExtraMethods(String className, String... methodNames)
-        throws ClassNotFoundException {
+            throws ClassNotFoundException {
         Kelas k1 = new Kelas(className);
         String msg = className + ": have extra methods:\n";
         boolean extra = false;
-        for (Method m : k1.getMethods()) {
+        for (String name : methodNames) {
             boolean found = false;
-            for (String name : methodNames) {
+            for (Method m : k1.getMethods()) {
                 if (m.getName().equals(name)) {
+                    if (found) {
+                        msg += " - " + m + "\n";
+                        extra = true;
+                    }
                     found = true;
-                    break;
                 }
-            }
-            if (!found) {
-                msg += " - " + m + "\n";
-                extra = true;
             }
         }
         if (extra) {
@@ -105,7 +103,7 @@ class Pakej {
     }
 
     public static void mustNotHaveOnlyInterfaceAsParent(String name1, String name2)
-        throws ClassNotFoundException {
+            throws ClassNotFoundException {
         Kelas k1 = new Kelas(name1);
         Kelas k2 = new Kelas(name2);
         if (k1.shareCommonSupertypeWith(k2)) {
@@ -125,7 +123,7 @@ class Pakej {
     }
 
     public static void mustHaveProperAbstractClassAsParent(String name1, String name2)
-        throws ClassNotFoundException {
+            throws ClassNotFoundException {
         // Check if common parent is a proper abstract class
         Kelas k1 = new Kelas(name1);
         Kelas k2 = new Kelas(name2);
@@ -142,7 +140,7 @@ class Pakej {
     }
 
     public static void mustDeclareComputeFareOrConfigureParent(String name)
-        throws ClassNotFoundException {
+            throws ClassNotFoundException {
         Kelas k = new Kelas(name);
         if (k.hasPublicMethod("computeFare", Class.forName("Request"))) {
             return;
@@ -156,7 +154,7 @@ class Pakej {
     }
 
     public static void mustDefineConstantWithValue(String name, int n)
-        throws ClassNotFoundException {
+            throws ClassNotFoundException {
         Kelas k = new Kelas(name);
         if (!k.hasConstantFieldWithTypeValue(int.class, n)) {
             System.out.println(name + " does not have a const with value " + n);
@@ -164,7 +162,7 @@ class Pakej {
     }
 
     public static void mustDefineIntConstantWithValues(String name, int... values)
-        throws ClassNotFoundException {
+            throws ClassNotFoundException {
         Kelas k = new Kelas(name);
         boolean found = false;
         String msg = name + ": no const with value(s) ";
@@ -181,7 +179,7 @@ class Pakej {
     }
 
     public static void mustImplementOneOfGenericInterfaces(String name, String... intfNames)
-        throws ClassNotFoundException {
+            throws ClassNotFoundException {
         Kelas k = new Kelas(name);
         boolean found = false;
         for (String intfName : intfNames) {

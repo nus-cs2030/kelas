@@ -4,14 +4,14 @@ import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Kelas is a wrapper around Java's reflection Class class.  It provides
  * additional methods to help to check for good programming practice and
  * to verify if classes follow a certain specification.
- *
+ * <p>
  * Created to help with grading of CS2030 homework.
  */
 
@@ -21,7 +21,8 @@ class Kelas {
 
     /**
      * Construct a Kelas object for the class with the given name.
-     * @param  className              The name of the class.
+     *
+     * @param className The name of the class.
      * @throws ClassNotFoundException Thrown if the className is not valid.
      */
     public Kelas(String className) throws ClassNotFoundException {
@@ -31,6 +32,7 @@ class Kelas {
     /**
      * Construct a Kelas object for the given Class object.
      * (e.g., new Kelas(String.class))
+     *
      * @param c The Class object
      */
     public Kelas(Class<?> c) {
@@ -40,18 +42,19 @@ class Kelas {
     /**
      * Return a list of fields defined in this class, excluding
      * constants defined as static or final.
+     *
      * @return A list of instance fields.
      */
     public List<Field> getFields() {
         return Stream.of(this.c.getDeclaredFields())
-            .filter(f -> !Modifier.isStatic(f.getModifiers()))
-            .filter(f -> !Modifier.isFinal(f.getModifiers()))
-            .collect(Collectors.toList());
+                .filter(f -> !Modifier.isStatic(f.getModifiers()))
+                .filter(f -> !Modifier.isFinal(f.getModifiers()))
+                .collect(Collectors.toList());
     }
 
     public List<Field> getAllFields() {
         return Stream.of(this.c.getDeclaredFields())
-            .collect(Collectors.toList());
+                .collect(Collectors.toList());
     }
 
     public boolean containsFields() {
@@ -61,14 +64,15 @@ class Kelas {
     /**
      * Return a list of public fields defined in this class, excluding
      * constants defined as public static final.
+     *
      * @return A list of public fields.
      */
     public List<Field> getPublicFields() {
         return Stream.of(this.c.getDeclaredFields())
-            .filter(f -> Modifier.isPublic(f.getModifiers()))
-            .filter(f -> !Modifier.isStatic(f.getModifiers()))
-            .filter(f -> !Modifier.isFinal(f.getModifiers()))
-            .collect(Collectors.toList());
+                .filter(f -> Modifier.isPublic(f.getModifiers()))
+                .filter(f -> !Modifier.isStatic(f.getModifiers()))
+                .filter(f -> !Modifier.isFinal(f.getModifiers()))
+                .collect(Collectors.toList());
     }
 
     public boolean containsPublicFields() {
@@ -78,14 +82,15 @@ class Kelas {
     /**
      * Return a list of private fields defined in this class, excluding
      * constants defined as private static final.
+     *
      * @return A list of public fields.
      */
     public List<Field> getPrivateFields() {
         return Stream.of(this.c.getDeclaredFields())
-            .filter(f -> Modifier.isPrivate(f.getModifiers()))
-            .filter(f -> !Modifier.isStatic(f.getModifiers()))
-            .filter(f -> !Modifier.isFinal(f.getModifiers()))
-            .collect(Collectors.toList());
+                .filter(f -> Modifier.isPrivate(f.getModifiers()))
+                .filter(f -> !Modifier.isStatic(f.getModifiers()))
+                .filter(f -> !Modifier.isFinal(f.getModifiers()))
+                .collect(Collectors.toList());
     }
 
     public boolean containsPrivateFields() {
@@ -94,14 +99,15 @@ class Kelas {
 
     /**
      * Return a list of public static final fields defined in this class.
+     *
      * @return A list of public static final fields.
      */
     public List<Field> getConstants() {
         return Stream.of(this.c.getDeclaredFields())
-            .filter(f -> Modifier.isPublic(f.getModifiers()) &&
-                    Modifier.isStatic(f.getModifiers()) &&
-                    Modifier.isFinal(f.getModifiers()))
-            .collect(Collectors.toList());
+                .filter(f -> Modifier.isPublic(f.getModifiers()) &&
+                        Modifier.isStatic(f.getModifiers()) &&
+                        Modifier.isFinal(f.getModifiers()))
+                .collect(Collectors.toList());
     }
 
     public boolean containsConstants() {
@@ -110,6 +116,7 @@ class Kelas {
 
     /**
      * Return true if a field is found with given type and value
+     *
      * @return A list of fields.
      */
     public <T> boolean hasFieldWithTypeValue(Class<T> type, T value) {
@@ -128,6 +135,7 @@ class Kelas {
 
     /**
      * Return true if a constant field is found with given type and value
+     *
      * @return A list of public static final fields.
      */
     public <T> boolean hasConstantFieldWithTypeValue(Class<T> type, T value) {
@@ -146,6 +154,7 @@ class Kelas {
 
     /**
      * Checks if class has a certain public method
+     *
      * @return true if such a method is found.  false otherwise.
      */
     public boolean hasPublicMethod(String name, Class<?>... paramTypes) {
@@ -162,6 +171,7 @@ class Kelas {
 
     /**
      * Get all methods
+     *
      * @return list of methods.
      */
     public List<Method> getMethods() {
@@ -172,6 +182,7 @@ class Kelas {
      * Checks if this class share at least one common (immediate) parent with
      * another class.  The common parent could be a class or an interface.
      * Note: Object does not count as common parent.
+     *
      * @return true if a shared parent is found; false otherwise.
      */
     public boolean shareCommonSupertypeWith(Kelas ac) {
@@ -213,12 +224,13 @@ class Kelas {
      * Return all (immediate) parent supertype with another class.
      * The common parent could be a class or an interface.  Object
      * does not count as common parent.
+     *
      * @return A list of Class objects.
      */
     public List<Class<?>> getCommonSupertypeWith(Kelas that) {
         List<Class<?>> list = new ArrayList<>();
         if (this.c.getSuperclass().equals(that.c.getSuperclass()) &&
-            !this.c.getSuperclass().equals(Object.class)) {
+                !this.c.getSuperclass().equals(Object.class)) {
             list.add(this.c.getSuperclass());
         }
 
@@ -234,7 +246,8 @@ class Kelas {
 
     /**
      * Checks if this class implements a given Generic interface.
-     * @param name The fully qualified name of the interface
+     *
+     * @param name         The fully qualified name of the interface
      * @param typeArgument The fully qualified name of the typeArgument
      * @return true if the class imlpements the interface; false otherwise.
      */
@@ -250,6 +263,7 @@ class Kelas {
 
     /**
      * Checks if this class is an abstract class.
+     *
      * @return true if it is an abstract class; false otherwise.
      */
     public boolean isAbstract() {
@@ -258,6 +272,7 @@ class Kelas {
 
     /**
      * Checks if this class is an interface.
+     *
      * @return true if it is an interface; false otherwise.
      */
     public boolean isInterface() {
@@ -266,6 +281,7 @@ class Kelas {
 
     /**
      * Checks if this class has an abstract method.
+     *
      * @return true if it has at least one abstract method; false otherwise.
      */
     public boolean hasAbstractMethods() {
