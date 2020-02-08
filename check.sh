@@ -1,15 +1,16 @@
 #!/bin/bash
 
 MYFILES="Kelas.class CheckDesign.class Pakej.class"
-targetfolder=$1
-
+lab=$1
+target=$2
+cd $lab
 javac ../Kelas.java
 mv ../Kelas.class .
 javac ../Pakej.java
 mv ../Pakej.class .
 javac CheckDesign.java
 
-cd $targetfolder
+cd $target
 
 javac *.java
 for i in $MYFILES

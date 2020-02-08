@@ -12,3 +12,5 @@ A sample of how the class is used can be found under the `ride` subdirectory, wh
 There is a bash script `check.sh` that compiles everything and run `CheckDesign` on the sample code, given under the `sample` subdirectory. 
 
 A sample output can be found in `sample.design-bug.txt`
+
+To execute check_all in a particular lab, execute `bash check_all.sh <folder-name ie "lab2">` in top level directory.
