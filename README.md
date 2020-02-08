@@ -12,8 +12,8 @@ Script will check design for all folders within the lab folder specified. Each f
 - `Pakej.java`: Helper methods
 - :file_folder: `lab`
   - `CheckDesign.java` - Define lab checks
-  - :file_folder: Submission1
-  - :file_folder: Submission2
+  - :file_folder: `Submission1`
+  - :file_folder: `Submission2`
 
 ### Todo
  More restructuring and code organization to be done (methods are a bit messy at the moment).
