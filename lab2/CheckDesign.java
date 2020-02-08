@@ -11,13 +11,13 @@ import java.util.List;
 
    - SmallCruise
    - [x] must inherit from Cruise
-   - [ ] must contain one "private final static" field with value 1
-   - [ ] must contain one "private final static" field with value 30
+   - [x] must contain one "private final static" field with value 1
+   - [x] must contain one "private final static" field with value 30
 
    - BigCruise
    - [x] must inherit from Cruise
-   - [ ] must contain one "private final static" field with value 40 or 40.0
-   - [ ] must contain one "private final static" field with value 50 or 50.0
+   - [x] must contain one "private final static" field with value 40 or 40.0
+   - [x] must contain one "private final static" field with value 50 or 50.0
    */
 
 class CheckDesign {
