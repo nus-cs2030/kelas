@@ -40,25 +40,12 @@ class Kelas {
     }
 
     /**
-     * Return a list of fields defined in this class, excluding
-     * constants defined as static or final.
-     *
-     * @return A list of instance fields.
+     * Get all fields
+     * @return Get all fields
      */
-    public List<Field> getFields() {
-        return Stream.of(this.c.getDeclaredFields())
-                .filter(f -> !Modifier.isStatic(f.getModifiers()))
-                .filter(f -> !Modifier.isFinal(f.getModifiers()))
-                .collect(Collectors.toList());
-    }
-
     public List<Field> getAllFields() {
         return Stream.of(this.c.getDeclaredFields())
                 .collect(Collectors.toList());
-    }
-
-    public boolean containsFields() {
-        return !this.getFields().isEmpty();
     }
 
     /**
@@ -135,7 +122,7 @@ class Kelas {
      */
     public <T> boolean hasFieldWithTypeValue(Class<T> type, T value) {
         try {
-            List<Field> fields = getFields();
+            List<Field> fields = getAllFields();
             for (Field f : fields) {
                 if (f.getType() == type && type.cast(f.get(null)).equals(value)) {
                     return true;
