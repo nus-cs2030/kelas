@@ -54,7 +54,7 @@ class Pakej {
                     .collect(Collectors.toList());
 
             if (!list.isEmpty()) {
-                System.out.println(name + ": contains non private and non final fields:");
+                System.out.println(name + ": contains non private or non final fields:");
                 for (Field f : list) {
                     System.out.println(" - " + f);
                 }
