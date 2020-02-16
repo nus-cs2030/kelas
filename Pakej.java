@@ -155,35 +155,49 @@ class Pakej {
 
     public static void mustHaveProperAbstractClassAsParent(String name1, String name2)
             throws ClassNotFoundException {
-        // Check if common parent is a proper abstract class
         Kelas k1 = new Kelas(name1);
         Kelas k2 = new Kelas(name2);
         List<Class<?>> list = k1.getCommonSupertypeWith(k2);
+
+        // look for abstract
+        boolean abstractExists = false;
         for (Class<?> c : list) {
             Kelas k = new Kelas(c);
             if (k.isAbstract()) {
+                abstractExists = true;
                 if (!k.hasAbstractMethods()) {
                     System.out.println(k + ": is abstract but does not have any abstract method");
                 }
             }
-            return;
+        }
+
+        // Output
+        if (!abstractExists) {
+            System.out.println(name1 + " & " + name2 + " have no abstract class as parent");
         }
     }
 
     public static void mustHaveProperInterfaceAsParent(String name1, String name2)
             throws ClassNotFoundException {
-        // Check if common parent is a proper abstract class
         Kelas k1 = new Kelas(name1);
         Kelas k2 = new Kelas(name2);
         List<Class<?>> list = k1.getCommonSupertypeWith(k2);
+
+        // look for interface
+        boolean interfaceExists = false;
         for (Class<?> c : list) {
             Kelas k = new Kelas(c);
             if (k.isInterface()) {
+                interfaceExists = true;
                 if (!k.hasMethods()) {
                     System.out.println(k + ": is interface but does not have any methods");
                 }
             }
-            return;
+        }
+
+        // Output
+        if (!interfaceExists) {
+            System.out.println(name1 + " & " + name2 + " do not implement an interface");
         }
     }
 
