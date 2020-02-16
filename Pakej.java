@@ -153,6 +153,7 @@ class Pakej {
         }
     }
 
+    // Allows interfaces as well
     public static void mustHaveProperAbstractClassAsParent(String name1, String name2)
             throws ClassNotFoundException {
         Kelas k1 = new Kelas(name1);

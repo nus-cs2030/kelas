@@ -2,11 +2,11 @@ import java.util.List;
 
 /*
     - Cuboid
-        - [x] Shares common abstract class with Sphere
+        - [x] Shares common abstract class/interface with Sphere
         - [x] No public/default access modifier for fields
 
     - Sphere
-        - [x] Shares common abstract class with Cuboid
+        - [x] Shares common abstract class/interface with Cuboid
         - [x] No public/default access modifier for fields
 
     - No SolidSphere/SolidCuboid 
