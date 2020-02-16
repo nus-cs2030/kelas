@@ -43,6 +43,21 @@ class Pakej {
         }
     }
 
+    public static void checkDefaultFields(List<String> classes) {
+        for (String name : classes) {
+            try {
+                Kelas kelas = new Kelas(name);
+                if (kelas.containsDefaultFields()) {
+                    System.out.println(name + ": contains default fields:");
+                    for (Field f : kelas.getDefaultFields()) {
+                        System.out.println(" - " + f);
+                    }
+                }
+            } catch (ClassNotFoundException e) {
+            }
+        }
+    }
+
     // MUST MEANS NEGATIVE - and print out
     public static void mustHavePrivateAndFinalFields(String name) {
         try {

@@ -49,21 +49,30 @@ class Kelas {
     }
 
     /**
-     * Return a list of public fields defined in this class, excluding
-     * constants defined as public static final.
+     * Return a list of public fields defined in this class
      *
      * @return A list of public fields.
      */
     public List<Field> getPublicFields() {
         return Stream.of(this.c.getDeclaredFields())
                 .filter(f -> Modifier.isPublic(f.getModifiers()))
-                .filter(f -> !Modifier.isStatic(f.getModifiers()))
-                .filter(f -> !Modifier.isFinal(f.getModifiers()))
                 .collect(Collectors.toList());
     }
 
     public boolean containsPublicFields() {
         return !this.getPublicFields().isEmpty();
+    }
+
+    public List<Field> getDefaultFields() {
+        return Stream.of(this.c.getDeclaredFields())
+                .filter(f -> !Modifier.isPublic(f.getModifiers()))
+                .filter(f -> !Modifier.isPrivate(f.getModifiers()))
+                .filter(f -> !Modifier.isProtected(f.getModifiers()))
+                .collect(Collectors.toList());
+    }
+
+    public boolean containsDefaultFields() {
+        return !this.getDefaultFields().isEmpty();
     }
 
     /**
