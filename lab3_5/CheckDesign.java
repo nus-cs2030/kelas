@@ -21,8 +21,7 @@ class CheckDesign {
 
         List<String> unwantedClasses = List.of(
                 "SolidSphere",
-                "SolidCuboid"
-                );
+                "SolidCuboid");
 
         // Preliminary checks
         Pakej.checkIfClassesExist(classes);
