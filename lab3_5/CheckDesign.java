@@ -25,7 +25,7 @@ class CheckDesign {
 
         // Preliminary checks
         Pakej.checkIfClassesExist(classes);
-        Pakej.checkIfClassesDoNotExist(classes);
+        Pakej.checkIfClassesDoNotExist(unwantedClasses);
 
         // Main checks
         try {
