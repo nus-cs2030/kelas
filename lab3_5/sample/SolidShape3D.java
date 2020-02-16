@@ -1,4 +1,4 @@
-public class SolidShape3D extends Shape3D implements SolidProp {
+public class SolidShape3D extends Shape3D {
     private final Shape3D shape3D;
     private final Material material;
 
