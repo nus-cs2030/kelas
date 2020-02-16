@@ -319,6 +319,18 @@ class Kelas {
         return false;
     }
 
+    /**
+     * Checks if this interface has an interface method
+     * @return
+     */
+    public boolean hasMethods() {
+        Method[] methods = c.getDeclaredMethods();
+        if (methods.length > 0) {
+            return true;
+        }
+        return false;
+    }
+
     public String toString() {
         return c.toString();
     }

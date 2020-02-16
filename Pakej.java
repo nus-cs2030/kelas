@@ -23,6 +23,22 @@ class Pakej {
     }
 
     /**
+     * Check if classes do not exist
+     *
+     * @param classes List<String> of class names to check for lack of existence
+     * @throws ClassNotFoundException Thrown if the class is not valid.
+     */
+    public static void checkIfClassesDoNotExist(List<String> classes) {
+        for (String name : classes) {
+            try {
+                new Kelas(name);
+                System.out.println(name + " found");
+            } catch (ClassNotFoundException e) {
+            }
+        }
+    }
+
+    /**
      * Check if public fields exist
      *
      * @param className The name of the class.
@@ -148,6 +164,23 @@ class Pakej {
             if (k.isAbstract()) {
                 if (!k.hasAbstractMethods()) {
                     System.out.println(k + ": is abstract but does not have any abstract method");
+                }
+            }
+            return;
+        }
+    }
+
+    public static void mustHaveProperInterfaceAsParent(String name1, String name2)
+            throws ClassNotFoundException {
+        // Check if common parent is a proper abstract class
+        Kelas k1 = new Kelas(name1);
+        Kelas k2 = new Kelas(name2);
+        List<Class<?>> list = k1.getCommonSupertypeWith(k2);
+        for (Class<?> c : list) {
+            Kelas k = new Kelas(c);
+            if (k.isInterface()) {
+                if (!k.hasMethods()) {
+                    System.out.println(k + ": is interface but does not have any methods");
                 }
             }
             return;

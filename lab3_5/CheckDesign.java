@@ -1,42 +1,41 @@
 import java.util.List;
 
 /*
-   - SolidCuboid
-   - [x] Extends from Cuboid
-   - [x] No public/default access modifier for fields
+    - Cuboid
+        - [x] Shares common abstract class with Sphere
+        - [x] No public/default access modifier for fields
 
-   - SolidSphere
-   - [x] Extends from Sphere
-   - [x] No public/default access modifier for fields
+    - Sphere
+        - [x] Shares common abstract class with Cuboid
+        - [x] No public/default access modifier for fields
 
-   - SolidCuboid and SolidSphere
-   - [ ] Both share a common abstract Class
-   - [ ] Both share another common interface
+    - No SolidSphere/SolidCuboid 
 */
 
 class CheckDesign {
 
     public static void main(String[] args) {
         List<String> classes = List.of(
-                "SolidCuboid",
-                "SolidSphere");
+                "Cuboid",
+                "Sphere");
+
+        List<String> unwantedClasses = List.of(
+                "SolidSphere",
+                "SolidCuboid"
+                );
 
         // Preliminary checks
         Pakej.checkIfClassesExist(classes);
+        Pakej.checkIfClassesDoNotExist(classes);
 
         // Main checks
         try {
             Pakej.checkPublicFields(classes);
             Pakej.checkDefaultFields(classes);
 
-            // SolidCuboid
-            Pakej.mustBeChildOf("SolidCuboid", "Cuboid");
-
-            // SolidSphere
-            Pakej.mustBeChildOf("SolidSphere", "Sphere");
+            // Sphere & Cuboid
+            Pakej.mustHaveProperAbstractClassAsParent("Sphere", "Cuboid");
         } catch (ClassNotFoundException e) {
-
         }
-
     }
 }
