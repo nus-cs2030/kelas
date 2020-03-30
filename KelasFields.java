@@ -2,7 +2,6 @@ import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -96,6 +95,7 @@ public class KelasFields{
 
     /**
      * Filter fields with type and value
+     * NOTE: Only works with static fields!
      * @param type the type to check
      * @param value the value to check
      * @return KelasFields object to chain

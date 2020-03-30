@@ -37,6 +37,24 @@ class Kelas {
     }
 
     /**
+     * Checks if this class is an abstract class.
+     *
+     * @return true if it is an abstract class; false otherwise.
+     */
+    public boolean isAbstract() {
+        return Modifier.isAbstract(c.getModifiers());
+    }
+
+    /**
+     * Checks if this class is an interface.
+     *
+     * @return true if it is an interface; false otherwise.
+     */
+    public boolean isInterface() {
+        return c.isInterface();
+    }
+
+    /**
      * Get all fields
      * @return KelasFields
      */
@@ -50,31 +68,6 @@ class Kelas {
      */
     public KelasMethods getMethods() {
         return new KelasMethods(Stream.of(this.c.getDeclaredMethods()));
-    }
-
-    /**
-     * Checks if this class share at least one common (immediate) parent with
-     * another class.  The common parent could be a class or an interface.
-     * Note: Object does not count as common parent.
-     *
-     * @return true if a shared parent is found; false otherwise.
-     */
-    public boolean shareCommonSupertypeWith(Kelas ac) {
-        if (this.c.getSuperclass().equals(Object.class)) {
-            return false;
-        }
-        if (this.c.getSuperclass().equals(ac.c.getSuperclass())) {
-            return true;
-        }
-
-        for (Class<?> ifs1 : this.c.getInterfaces()) {
-            for (Class<?> ifs2 : ac.c.getInterfaces()) {
-                if (ifs1.equals(ifs2)) {
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 
     public boolean isChildOf(String Parent) throws ClassNotFoundException {
@@ -119,6 +112,32 @@ class Kelas {
     }
 
     /**
+     * Checks if this class share at least one common (immediate) parent with
+     * another class.  The common parent could be a class or an interface.
+     * Note: Object does not count as common parent.
+     *
+     * @return true if a shared parent is found; false otherwise.
+     */
+    public boolean shareCommonSupertypeWith(Kelas ac) {
+        if (this.c.getSuperclass().equals(Object.class)) {
+            return false;
+        }
+        if (this.c.getSuperclass().equals(ac.c.getSuperclass())) {
+            return true;
+        }
+
+        for (Class<?> ifs1 : this.c.getInterfaces()) {
+            for (Class<?> ifs2 : ac.c.getInterfaces()) {
+                if (ifs1.equals(ifs2)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+
+    /**
      * Checks if this class implements a given Generic interface.
      *
      * @param name         The fully qualified name of the interface
@@ -133,24 +152,6 @@ class Kelas {
             }
         }
         return false;
-    }
-
-    /**
-     * Checks if this class is an abstract class.
-     *
-     * @return true if it is an abstract class; false otherwise.
-     */
-    public boolean isAbstract() {
-        return Modifier.isAbstract(c.getModifiers());
-    }
-
-    /**
-     * Checks if this class is an interface.
-     *
-     * @return true if it is an interface; false otherwise.
-     */
-    public boolean isInterface() {
-        return c.isInterface();
     }
 
     public String toString() {

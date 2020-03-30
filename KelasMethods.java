@@ -1,6 +1,4 @@
 import java.lang.reflect.Modifier;
-import java.lang.reflect.Type;
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
@@ -80,8 +78,8 @@ public class KelasMethods {
      */
     /**
      * Terminal operation. 
-     * Collects the fields into a List.
-     * @return List of fields
+     * Collects the methods into a List.
+     * @return List of methods
      */
     public List<Method> collect() {
         return this.stream.collect(Collectors.toList());
@@ -89,8 +87,8 @@ public class KelasMethods {
 
     /**
      * Terminal operation. 
-     * Count the number of fields.
-     * @return Number of fields
+     * Count the number of methods.
+     * @return Number of methods
      */
     public int count() {
         return this.stream.collect(Collectors.toList()).size();
@@ -98,7 +96,7 @@ public class KelasMethods {
 
     /**
      * Terminal operation. 
-     * Returns true if fields are absent. Returns false otherwise.
+     * Returns true if methods are absent. Returns false otherwise.
      */
     public boolean areAbsent() {
         return this.stream
@@ -108,7 +106,7 @@ public class KelasMethods {
 
     /**
      * Terminal operation. 
-     * Returns true if fields are present. Returns false otherwise.
+     * Returns true if methods are present. Returns false otherwise.
      */
     public boolean arePresent() {
         return !areAbsent();

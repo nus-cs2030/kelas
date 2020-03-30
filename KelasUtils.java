@@ -78,6 +78,7 @@ class KelasUtils {
         Kelas k1 = new Kelas(name1);
         Kelas k2 = new Kelas(name2);
         List<Class<?>> list = k1.getCommonSupertypeWith(k2);
+        boolean pass;
         for (Class<?> c : list) {
             Kelas k = new Kelas(c);
             if (k.isAbstract()) {
@@ -119,81 +120,5 @@ class KelasUtils {
             }
         }
         return found;
-    }
-
-    public static void mustDefineConstantWithValue(String name, int n)
-    throws ClassNotFoundException {
-        Kelas k = new Kelas(name);
-        if (!k.hasPublicConstantFieldWithTypeValue(int.class, n)) {
-        //System.out.println(name + " does not have a const with value " + n);
-        }
-    }
-
-    public static void mustDefinePublicIntConstantWithValues(String name, int... values)
-    throws ClassNotFoundException {
-        Kelas k = new Kelas(name);
-        boolean found = false;
-        String msg = name + ": no const with value(s) ";
-        for (int i : values) {
-            if (!k.hasPublicConstantFieldWithTypeValue(int.class, i)) {
-                msg += i + ", ";
-                found = true;
-            }
-        }
-        if (found) {
-            msg = msg.substring(0, msg.length() - 2);
-            //System.out.println(msg+"\n");
-        }
-    }
-
-    public static void mustDefinePrivateIntConstantWithValues(String name, int... values)
-    throws ClassNotFoundException {
-        Kelas k = new Kelas(name);
-        boolean found = false;
-        String msg = name + " should include private static final field(s) with value(s): " ;
-        for (int i : values) {
-        if (!k.hasPrivateConstantFieldWithTypeValue(Integer.class, i))  { 
-            msg += i + ", ";
-            found = true;
-        }
-        }
-        if (found) {
-            msg = msg.substring(0, msg.length() - 2);
-            msg += ". Use a private static final field for constant values instead of hardcoding them as magic numbers.\n";
-        //System.out.println(msg);
-        }
-    }
-
-    public static Boolean mustDefineNFieldsOfType(String className, String fieldClassName, int n)
-            throws ClassNotFoundException {
-        Kelas k = new Kelas(className);
-        try {
-            Class fieldType =  Class.forName(fieldClassName);
-            int fieldCount = k.numberOfFieldsWithType(fieldType);
-            if (fieldCount != n) {
-                //System.out.println(String.format("Expected %d fields of type %s in %s, only found %d field(s).\n",n,fieldType,className,fieldCount));
-                return false;
-            }
-            return true;
-        } catch (ClassNotFoundException e) {
-            return false; // Class not found
-        }
-    }
-    
-    public static Boolean mustDefineNFieldsOfType(String className, Class fieldClass, int n)
-            throws ClassNotFoundException {
-        Kelas k = new Kelas(className);
-        int fieldCount = k.numberOfFieldsWithType(fieldClass);
-        if (fieldCount != n) {
-            //System.out.println(String.format("Expected %d fields of type %s in %s, only found %d field(s).\n",n,fieldClass,className,fieldCount));
-            return false;
-        }
-        return true;
-    }
-    
-    public static Boolean mustDefineEnumField(String className)
-            throws ClassNotFoundException {
-        Kelas k = new Kelas(className);
-        return k.hasEnumFields();
     }
 }
