@@ -2,6 +2,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
+import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -41,6 +42,7 @@ class Kelas {
 
     /**
      * Get all fields
+     * 
      * @return Get all fields
      */
     public List<Field> getAllFields() {
@@ -49,13 +51,16 @@ class Kelas {
     }
 
     /**
-     * Return a list of public fields defined in this class
-     *
+     * Return a list of public fields defined in this class, 
+     * excluding static or final (!static & !final)
+     * 
      * @return A list of public fields.
      */
     public List<Field> getPublicFields() {
         return Stream.of(this.c.getDeclaredFields())
                 .filter(f -> Modifier.isPublic(f.getModifiers()))
+                .filter(f -> !Modifier.isStatic(f.getModifiers()))
+                .filter(f -> !Modifier.isFinal(f.getModifiers()))
                 .collect(Collectors.toList());
     }
 
@@ -63,23 +68,26 @@ class Kelas {
         return !this.getPublicFields().isEmpty();
     }
 
-    public List<Field> getDefaultFields() {
+    /**
+     * Return a list of enum fields defined in this class.
+     * 
+     * @return A list of enum fields
+     */
+    public List<Field> getEnumFields() {
         return Stream.of(this.c.getDeclaredFields())
-                .filter(f -> !Modifier.isPublic(f.getModifiers()))
-                .filter(f -> !Modifier.isPrivate(f.getModifiers()))
-                .filter(f -> !Modifier.isProtected(f.getModifiers()))
+        .filter(f -> Enum.class.isAssignableFrom(f.getType()))
                 .collect(Collectors.toList());
     }
-
-    public boolean containsDefaultFields() {
-        return !this.getDefaultFields().isEmpty();
+    
+    public boolean hasEnumFields() {
+        return !this.getEnumFields().isEmpty();
     }
-
-    /**
-     * Return a list of private fields defined in this class, excluding
-     * constants defined as private static final.
-     *
-     * @return A list of public fields.
+    
+   /**
+     * Return a list of private fields defined in this class, 
+     * excluding static or final (!static & !final)
+     * 
+     * @return A list of private fields.
      */
     public List<Field> getPrivateFields() {
         return Stream.of(this.c.getDeclaredFields())
@@ -142,7 +150,43 @@ class Kelas {
             return false;
         }
     }
-
+    
+    /**
+     * Return the number of fields of a given type
+     *
+     * @return An int representing the number of the number of fields of a given type.
+     */
+    public int numberOfFieldsWithType(Class type) {
+        int fieldCount = 0;
+        List<Field> fields = getAllFields();
+        for (Field f : fields) {
+            if (f.getType() == type) {
+                fieldCount++;
+            }
+        }
+        return fieldCount;
+    }
+    
+    /**
+     * Return the number of fields of a given type
+     *
+     * @return An int representing the number of the number of fields of a given type.
+     */
+    public int numberOfFieldsWithType(Class type, Type genericType) {
+        int fieldCount = 0;
+        List<Field> fields = getAllFields();
+        for (Field f : fields) {
+            if (f.getType() == type) {
+                ParameterizedType currentType = (ParameterizedType) f.getGenericType();;
+                Type typeArgument = currentType.getActualTypeArguments()[0]; // Fix - handle misc number of generic types
+                if (typeArgument.equals(genericType)) {
+                    fieldCount++;
+                }
+            }
+        }
+        return fieldCount;
+    }
+    
     /**
      * Return true if a constant field is found with given type and value
      *
@@ -315,18 +359,6 @@ class Kelas {
             if (Modifier.isAbstract(m.getModifiers())) {
                 return true;
             }
-        }
-        return false;
-    }
-
-    /**
-     * Checks if this interface has an interface method
-     * @return
-     */
-    public boolean hasMethods() {
-        Method[] methods = c.getDeclaredMethods();
-        if (methods.length > 0) {
-            return true;
         }
         return false;
     }

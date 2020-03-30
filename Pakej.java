@@ -12,30 +12,17 @@ class Pakej {
      * @param classes List<String> of class names to check for existence
      * @throws ClassNotFoundException Thrown if the class is not valid.
      */
-    public static void checkIfClassesExist(List<String> classes) {
+    public static Boolean checkIfClassesExist(List<String> classes) {
+        Boolean allClassesFound = true;
         for (String name : classes) {
             try {
                 new Kelas(name);
             } catch (ClassNotFoundException e) {
-                System.out.println(name + ": not found");
+                System.out.println("Class not found: " + name);
+                allClassesFound = false;
             }
         }
-    }
-
-    /**
-     * Check if classes do not exist
-     *
-     * @param classes List<String> of class names to check for lack of existence
-     * @throws ClassNotFoundException Thrown if the class is not valid.
-     */
-    public static void checkIfClassesDoNotExist(List<String> classes) {
-        for (String name : classes) {
-            try {
-                new Kelas(name);
-                System.out.println(name + " found");
-            } catch (ClassNotFoundException e) {
-            }
-        }
+        return allClassesFound;
     }
 
     /**
@@ -49,9 +36,9 @@ class Pakej {
             try {
                 Kelas kelas = new Kelas(name);
                 if (kelas.containsPublicFields()) {
-                    System.out.println(name + ": contains public fields:");
+                    //System.out.println(name + ": contains public fields:");
                     for (Field f : kelas.getPublicFields()) {
-                        System.out.println(" - " + f);
+                        //System.out.println(" - " + f);
                     }
                 }
             } catch (ClassNotFoundException e) {
@@ -59,18 +46,22 @@ class Pakej {
         }
     }
 
-    public static void checkDefaultFields(List<String> classes) {
-        for (String name : classes) {
-            try {
-                Kelas kelas = new Kelas(name);
-                if (kelas.containsDefaultFields()) {
-                    System.out.println(name + ": contains default fields:");
-                    for (Field f : kelas.getDefaultFields()) {
-                        System.out.println(" - " + f);
-                    }
+    // MUST MEANS NEGATIVE - and print out
+    public static void mustHaveNonPublicAndFinalFields(String name) {
+        try {
+            Kelas kelas = new Kelas(name);
+            List<Field> list = kelas.getAllFields()
+                    .stream()
+                    .filter(f -> (!Modifier.isPrivate(f.getModifiers()) && !Modifier.isProtected(f.getModifiers())) || !Modifier.isFinal(f.getModifiers()))
+                    .collect(Collectors.toList());
+
+            if (!list.isEmpty()) {
+                //System.out.println(name + ": contains public/default or non final fields:");
+                for (Field f : list) {
+                    //System.out.println(" - " + f);
                 }
-            } catch (ClassNotFoundException e) {
             }
+        } catch (ClassNotFoundException e) {
         }
     }
 
@@ -85,10 +76,11 @@ class Pakej {
                     .collect(Collectors.toList());
 
             if (!list.isEmpty()) {
-                System.out.println(name + ": contains non private or non final fields:");
+                //System.out.println("The class " + name + " contains non private or non final fields:");
                 for (Field f : list) {
-                    System.out.println(" - " + f);
+                    //System.out.println(" - " + f);
                 }
+                //System.out.println("As a general rule, don't assign a more permissive access modifier than necessary. Also, remember to use final when writing classes which are immutable.\n");
             }
 
         } catch (ClassNotFoundException e) {
@@ -100,28 +92,30 @@ class Pakej {
         Kelas k1 = new Kelas(name1);
         Kelas k2 = new Kelas(name2);
         if (!k1.shareCommonSupertypeWith(k2)) {
-            System.out.println(name1 + " and " + name2 + " do not have common parent.");
+            //System.out.println(name1 + " and " + name2 + " do not have a common parent. Revisit the question and make sure you are not missing any inheritance requirements.\n");
         }
     }
 
-    public static void mustBeChildOf(String child, String parent) throws ClassNotFoundException {
+    public static Boolean mustBeChildOf(String child, String parent) throws ClassNotFoundException {
         Kelas k1 = new Kelas(child);
-        if (!k1.isChildOf(parent)) {
-            System.out.println(child + " does not inherit from " + parent);
+        Boolean isChildOf = k1.isChildOf(parent);
+        if (!isChildOf) {
+            //System.out.println(child + " does not inherit from " + parent + ". Revisit the question and make sure you are not missing any inheritance requirements.\n");
         }
+        return isChildOf;
     }
 
     public static void mustNotHaveExtraMethods(String className, String... methodNames)
             throws ClassNotFoundException {
         Kelas k1 = new Kelas(className);
-        String msg = className + ": have extra methods:\n";
+        String msg = "The class " + className + " has overloaded methods:";
         boolean extra = false;
         for (String name : methodNames) {
             boolean found = false;
             for (Method m : k1.getMethods()) {
                 if (m.getName().equals(name)) {
                     if (found) {
-                        msg += " - " + m + "\n";
+                        msg += "\n - " + m;
                         extra = true;
                     }
                     found = true;
@@ -129,7 +123,7 @@ class Pakej {
             }
         }
         if (extra) {
-            System.out.println(msg);
+            //System.out.println(msg+"\nMake sure you don't use overloading unnecessarily.\n");
         }
     }
 
@@ -148,57 +142,25 @@ class Pakej {
                 }
             }
             if (!foundClass) {
-                System.out.println(name1 + " and " + name2 + " both implement an interface.");
+                //System.out.println(name1 + " and " + name2 + " both implement an interface.\n");
             }
         }
     }
 
-    // Allows interfaces as well
     public static void mustHaveProperAbstractClassAsParent(String name1, String name2)
             throws ClassNotFoundException {
+        // Check if common parent is a proper abstract class
         Kelas k1 = new Kelas(name1);
         Kelas k2 = new Kelas(name2);
         List<Class<?>> list = k1.getCommonSupertypeWith(k2);
-
-        // look for abstract
-        boolean abstractExists = false;
         for (Class<?> c : list) {
             Kelas k = new Kelas(c);
             if (k.isAbstract()) {
-                abstractExists = true;
                 if (!k.hasAbstractMethods()) {
-                    System.out.println(k + ": is abstract but does not have any abstract method");
+                    //System.out.println(k + ": is abstract but does not have any abstract method");
                 }
             }
-        }
-
-        // Output
-        if (!abstractExists) {
-            System.out.println(name1 + " & " + name2 + " have no abstract class as parent");
-        }
-    }
-
-    public static void mustHaveProperInterfaceAsParent(String name1, String name2)
-            throws ClassNotFoundException {
-        Kelas k1 = new Kelas(name1);
-        Kelas k2 = new Kelas(name2);
-        List<Class<?>> list = k1.getCommonSupertypeWith(k2);
-
-        // look for interface
-        boolean interfaceExists = false;
-        for (Class<?> c : list) {
-            Kelas k = new Kelas(c);
-            if (k.isInterface()) {
-                interfaceExists = true;
-                if (!k.hasMethods()) {
-                    System.out.println(k + ": is interface but does not have any methods");
-                }
-            }
-        }
-
-        // Output
-        if (!interfaceExists) {
-            System.out.println(name1 + " & " + name2 + " do not implement an interface");
+            return;
         }
     }
 
@@ -208,10 +170,10 @@ class Pakej {
         if (k.hasPublicMethod("computeFare", Class.forName("Request"))) {
             return;
         } else {
-            System.out.println(name + ": no computeFare(). Parent's constructors:");
+            //System.out.println(name + ": no computeFare(). Parent's constructors:");
             Constructor<?>[] cs = Class.forName(name).getSuperclass().getDeclaredConstructors();
             for (Constructor<?> c : cs) {
-                System.out.println(" - " + c);
+                //System.out.println(" - " + c);
             }
         }
     }
@@ -220,7 +182,7 @@ class Pakej {
             throws ClassNotFoundException {
         Kelas k = new Kelas(name);
         if (!k.hasPublicConstantFieldWithTypeValue(int.class, n)) {
-            System.out.println(name + " does not have a const with value " + n);
+            //System.out.println(name + " does not have a const with value " + n);
         }
     }
 
@@ -237,7 +199,7 @@ class Pakej {
         }
         if (found) {
             msg = msg.substring(0, msg.length() - 2);
-            System.out.println(msg);
+            //System.out.println(msg+"\n");
         }
     }
 
@@ -245,20 +207,21 @@ class Pakej {
             throws ClassNotFoundException {
         Kelas k = new Kelas(name);
         boolean found = false;
-        String msg = name + ": no const with value(s) ";
+        String msg = name + " should include private static final field(s) with value(s): " ;
         for (int i : values) {
-            if (!k.hasPrivateConstantFieldWithTypeValue(Integer.class, i)) {
+            if (!k.hasPrivateConstantFieldWithTypeValue(Integer.class, i))  { 
                 msg += i + ", ";
                 found = true;
             }
         }
         if (found) {
             msg = msg.substring(0, msg.length() - 2);
-            System.out.println(msg);
+            msg += ". Use a private static final field for constant values instead of hardcoding them as magic numbers.\n";
+            //System.out.println(msg);
         }
     }
 
-    public static void mustImplementOneOfGenericInterfaces(String name, String... intfNames)
+    public static Boolean mustImplementOneOfGenericInterfaces(String name, String... intfNames)
             throws ClassNotFoundException {
         Kelas k = new Kelas(name);
         boolean found = false;
@@ -269,10 +232,44 @@ class Pakej {
             }
         }
         if (!found) {
-            System.out.println(name + " does not implement one of:");
+            //System.out.println("The class " + name + " does not implement one of:");
             for (String intfName : intfNames) {
-                System.out.println(" - " + intfName);
+                //System.out.println(" - " + intfName);
             }
         }
+        return found;
+    }
+    
+    public static Boolean mustDefineNFieldsOfType(String className, String fieldClassName, int n)
+            throws ClassNotFoundException {
+        Kelas k = new Kelas(className);
+        try {
+            Class fieldType =  Class.forName(fieldClassName);
+            int fieldCount = k.numberOfFieldsWithType(fieldType);
+            if (fieldCount != n) {
+                //System.out.println(String.format("Expected %d fields of type %s in %s, only found %d field(s).\n",n,fieldType,className,fieldCount));
+                return false;
+            }
+            return true;
+        } catch (ClassNotFoundException e) {
+            return false; // Class not found
+        }
+    }
+    
+    public static Boolean mustDefineNFieldsOfType(String className, Class fieldClass, int n)
+            throws ClassNotFoundException {
+        Kelas k = new Kelas(className);
+        int fieldCount = k.numberOfFieldsWithType(fieldClass);
+        if (fieldCount != n) {
+            //System.out.println(String.format("Expected %d fields of type %s in %s, only found %d field(s).\n",n,fieldClass,className,fieldCount));
+            return false;
+        }
+        return true;
+    }
+    
+    public static Boolean mustDefineEnumField(String className)
+            throws ClassNotFoundException {
+        Kelas k = new Kelas(className);
+        return k.hasEnumFields();
     }
 }
