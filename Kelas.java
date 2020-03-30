@@ -1,11 +1,7 @@
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
-import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -42,209 +38,18 @@ class Kelas {
 
     /**
      * Get all fields
-     * 
-     * @return Get all fields
+     * @return KelasFields
      */
-    public List<Field> getAllFields() {
-        return Stream.of(this.c.getDeclaredFields())
-                .collect(Collectors.toList());
-    }
-
-    /**
-     * Return a list of public fields defined in this class, 
-     * excluding static or final (!static & !final)
-     * 
-     * @return A list of public fields.
-     */
-    public List<Field> getPublicFields() {
-        return Stream.of(this.c.getDeclaredFields())
-                .filter(f -> Modifier.isPublic(f.getModifiers()))
-                .filter(f -> !Modifier.isStatic(f.getModifiers()))
-                .filter(f -> !Modifier.isFinal(f.getModifiers()))
-                .collect(Collectors.toList());
-    }
-
-    public boolean containsPublicFields() {
-        return !this.getPublicFields().isEmpty();
-    }
-
-    /**
-     * Return a list of enum fields defined in this class.
-     * 
-     * @return A list of enum fields
-     */
-    public List<Field> getEnumFields() {
-        return Stream.of(this.c.getDeclaredFields())
-        .filter(f -> Enum.class.isAssignableFrom(f.getType()))
-                .collect(Collectors.toList());
-    }
-    
-    public boolean hasEnumFields() {
-        return !this.getEnumFields().isEmpty();
-    }
-    
-   /**
-     * Return a list of private fields defined in this class, 
-     * excluding static or final (!static & !final)
-     * 
-     * @return A list of private fields.
-     */
-    public List<Field> getPrivateFields() {
-        return Stream.of(this.c.getDeclaredFields())
-                .filter(f -> Modifier.isPrivate(f.getModifiers()))
-                .filter(f -> !Modifier.isStatic(f.getModifiers()))
-                .filter(f -> !Modifier.isFinal(f.getModifiers()))
-                .collect(Collectors.toList());
-    }
-
-    public boolean containsPrivateFields() {
-        return !this.getPrivateFields().isEmpty();
-    }
-
-    /**
-     * Return a list of public static final fields defined in this class.
-     *
-     * @return A list of public static final fields.
-     */
-    public List<Field> getPublicConstants() {
-        return Stream.of(this.c.getDeclaredFields())
-                .filter(f -> Modifier.isPublic(f.getModifiers()) &&
-                        Modifier.isStatic(f.getModifiers()) &&
-                        Modifier.isFinal(f.getModifiers()))
-                .collect(Collectors.toList());
-    }
-
-    /**
-     * Return a list of private static final fields defined in this class.
-     *
-     * @return A list of private static final fields.
-     */
-    public List<Field> getPrivateConstants() {
-        return Stream.of(this.c.getDeclaredFields())
-                .filter(f -> Modifier.isPrivate(f.getModifiers()) &&
-                        Modifier.isStatic(f.getModifiers()) &&
-                        Modifier.isFinal(f.getModifiers()))
-
-                .collect(Collectors.toList());
-    }
-
-    public boolean containsConstants() {
-        return !this.getPublicConstants().isEmpty();
-    }
-
-    /**
-     * Return true if a field is found with given type and value
-     *
-     * @return A list of fields.
-     */
-    public <T> boolean hasFieldWithTypeValue(Class<T> type, T value) {
-        try {
-            List<Field> fields = getAllFields();
-            for (Field f : fields) {
-                if (f.getType() == type && type.cast(f.get(null)).equals(value)) {
-                    return true;
-                }
-            }
-            return false;
-        } catch (IllegalAccessException e) {
-            return false;
-        }
-    }
-    
-    /**
-     * Return the number of fields of a given type
-     *
-     * @return An int representing the number of the number of fields of a given type.
-     */
-    public int numberOfFieldsWithType(Class type) {
-        int fieldCount = 0;
-        List<Field> fields = getAllFields();
-        for (Field f : fields) {
-            if (f.getType() == type) {
-                fieldCount++;
-            }
-        }
-        return fieldCount;
-    }
-    
-    /**
-     * Return the number of fields of a given type
-     *
-     * @return An int representing the number of the number of fields of a given type.
-     */
-    public int numberOfFieldsWithType(Class type, Type genericType) {
-        int fieldCount = 0;
-        List<Field> fields = getAllFields();
-        for (Field f : fields) {
-            if (f.getType() == type) {
-                ParameterizedType currentType = (ParameterizedType) f.getGenericType();;
-                Type typeArgument = currentType.getActualTypeArguments()[0]; // Fix - handle misc number of generic types
-                if (typeArgument.equals(genericType)) {
-                    fieldCount++;
-                }
-            }
-        }
-        return fieldCount;
-    }
-    
-    /**
-     * Return true if a constant field is found with given type and value
-     *
-     * @return A list of public static final fields.
-     */
-    public <T> boolean hasPublicConstantFieldWithTypeValue(Class<T> type, T value) {
-        try {
-            List<Field> consts = getPublicConstants();
-            for (Field f : consts) {
-                if (f.getType() == type && type.cast(f.get(null)).equals(value)) {
-                    return true;
-                }
-            }
-            return false;
-        } catch (IllegalAccessException e) {
-            return false;
-        }
-    }
-
-    public <T> boolean hasPrivateConstantFieldWithTypeValue(Class<T> type, T value) {
-        try {
-            List<Field> consts = getPrivateConstants();
-            for (Field f : consts) {
-                f.setAccessible(true);
-                if (type.equals(f.get(null).getClass()) && type.cast(f.get(null)).equals(value)) {
-                    return true;
-                }
-            }
-            return false;
-        } catch (IllegalAccessException e) {
-            return false;
-        }
-    }
-
-    /**
-     * Checks if class has a certain public method
-     *
-     * @return true if such a method is found.  false otherwise.
-     */
-    public boolean hasPublicMethod(String name, Class<?>... paramTypes) {
-        try {
-            Method m = this.c.getDeclaredMethod(name, paramTypes);
-            if (!Modifier.isPublic(m.getModifiers())) {
-                return false;
-            }
-        } catch (NoSuchMethodException e) {
-            return false;
-        }
-        return true;
+    public KelasFields getFields() {
+        return new KelasFields(Stream.of(this.c.getDeclaredFields()));
     }
 
     /**
      * Get all methods
-     *
-     * @return list of methods.
+     * @return KelasMethods
      */
-    public List<Method> getMethods() {
-        return List.of(this.c.getDeclaredMethods());
+    public KelasMethods getMethods() {
+        return new KelasMethods(Stream.of(this.c.getDeclaredMethods()));
     }
 
     /**
@@ -346,21 +151,6 @@ class Kelas {
      */
     public boolean isInterface() {
         return c.isInterface();
-    }
-
-    /**
-     * Checks if this class has an abstract method.
-     *
-     * @return true if it has at least one abstract method; false otherwise.
-     */
-    public boolean hasAbstractMethods() {
-        Method[] methods = c.getDeclaredMethods();
-        for (Method m : methods) {
-            if (Modifier.isAbstract(m.getModifiers())) {
-                return true;
-            }
-        }
-        return false;
     }
 
     public String toString() {

@@ -9,18 +9,20 @@ Script will check design for all folders within the lab folder specified. Each f
 If you stop the script halfway, make sure to delete all class files before running the script again, or the symbolic links will fail.
 
 ### Project Structure
-- `Kelas.java` - Class wrapper
-- `Pakej.java` - Helper methods
+- `Kelas` 
+    - Class wrapper
+- `KelasFields / KelasMethods`
+    - Expresses fields/methods of class
+    - Methods can be chained
+    - End with terminal operations
+- `KelasUtils` 
+    - Utility methods
+- `check_all / check.sh`
+    - Bash script to run
 - :open_file_folder: *lab*
   - `CheckDesign.java` - Define lab checks
   - :file_folder: *Submission1*
   - :file_folder: *Submission2*
-
-### Todo
- More restructuring and code organization to be done (methods are a bit messy at the moment).
-- Cut down `Kelas` methods to essentials
-- Combinations of checks should be done in `Pakej`
-- Rename long method names
 
 ### History and Intro
 `Kelas` is a wrapper around Java reflection that I wrote (hacked would be more accurate) for PE1 19/20 Sem 1, as a proof-of-concept.  The project aims to automatically checks for design flaws in the students submission.
