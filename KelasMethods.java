@@ -2,6 +2,7 @@ import java.lang.reflect.Modifier;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -19,33 +20,57 @@ public class KelasMethods {
     /*
      * Basic method checks
      */
-    public KelasMethods arePublic() {
-        this.stream.filter(m -> Modifier.isPublic(m.getModifiers()));
+    public KelasMethods arePublic(boolean allowed) {
+        Predicate<Method> pred = allowed 
+            ? m -> Modifier.isPublic(m.getModifiers()) 
+            : m -> !Modifier.isPublic(m.getModifiers());
+        this.stream = this.stream.filter(pred);
         return this;
     }
 
-    public KelasMethods arePrivate() {
-        this.stream.filter(m -> Modifier.isPrivate(m.getModifiers()));
+    public KelasMethods arePrivate(boolean allowed) {
+        Predicate<Method> pred = allowed 
+            ? m -> Modifier.isPrivate(m.getModifiers()) 
+            : m -> !Modifier.isPrivate(m.getModifiers());
+        this.stream = this.stream.filter(pred);
         return this;
     }
 
-    public KelasMethods areProtected() {
-        this.stream.filter(m -> Modifier.isProtected(m.getModifiers()));
+    public KelasMethods areProtected(boolean allowed) {
+        Predicate<Method> pred = allowed 
+            ? m -> Modifier.isProtected(m.getModifiers()) 
+            : m -> !Modifier.isProtected(m.getModifiers());
+        this.stream = this.stream.filter(pred);
         return this;
     }
 
-    public KelasMethods areAbstract() {
-        this.stream.filter(m -> Modifier.isAbstract(m.getModifiers()));
+    public KelasMethods areAbstract(boolean allowed) {
+        Predicate<Method> pred = allowed 
+            ? m -> Modifier.isAbstract(m.getModifiers()) 
+            : m -> !Modifier.isAbstract(m.getModifiers());
+        this.stream = this.stream.filter(pred);
         return this;
     }
 
-    public KelasMethods areStatic() {
-        this.stream.filter(m -> Modifier.isStatic(m.getModifiers()));
+    public KelasMethods areStatic(boolean allowed) {
+        Predicate<Method> pred = allowed 
+            ? m -> Modifier.isStatic(m.getModifiers()) 
+            : m -> !Modifier.isStatic(m.getModifiers());
+        this.stream = this.stream.filter(pred);
         return this;
     }
 
-    public KelasMethods areFinal() {
-        this.stream.filter(m -> Modifier.isFinal(m.getModifiers()));
+    public KelasMethods areFinal(boolean allowed) {
+        Predicate<Method> pred = allowed 
+            ? m -> Modifier.isFinal(m.getModifiers()) 
+            : m -> !Modifier.isFinal(m.getModifiers());
+        this.stream = this.stream.filter(pred);
+        return this;
+    }
+
+    // For edge cases that require OR operations
+    public KelasMethods filter(Predicate<Method> pred) {
+        this.stream = this.stream.filter(pred);
         return this;
     }
 
@@ -58,7 +83,7 @@ public class KelasMethods {
      * @return KelasMethods object to chain
      */
     public KelasMethods haveName(String name) {
-        this.stream.filter(m -> m.getName() == name);
+        this.stream = this.stream.filter(m -> m.getName() == name);
         return this;
     }
 
@@ -67,9 +92,8 @@ public class KelasMethods {
      * @param parameters the parameters to check (varargs)
      * @return KelasFields object to chain
      */
-    @SafeVarargs
-    public final KelasMethods haveParameters(Class<?>... parameters) {
-        this.stream.filter(m -> Arrays.equals(m.getParameters(), parameters));
+    public KelasMethods haveParameters(Class<?>... parameters) {
+        this.stream = this.stream.filter(m -> Arrays.equals(m.getParameterTypes(), parameters));
         return this;
     }
 
@@ -91,7 +115,7 @@ public class KelasMethods {
      * @return Number of methods
      */
     public int count() {
-        return this.stream.collect(Collectors.toList()).size();
+        return (int) this.stream.count();
     }
 
     /**
@@ -99,9 +123,7 @@ public class KelasMethods {
      * Returns true if methods are absent. Returns false otherwise.
      */
     public boolean areAbsent() {
-        return this.stream
-                    .collect(Collectors.toList())
-                    .isEmpty();
+        return count() == 0;
     }
 
     /**

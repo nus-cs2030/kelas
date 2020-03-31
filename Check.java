@@ -7,8 +7,8 @@ class Check {
         this.error = error;
     }
 
-    public boolean failed() {
-        return !pass;
+    public boolean passed() {
+        return pass;
     }
 
     public String getMessage() {

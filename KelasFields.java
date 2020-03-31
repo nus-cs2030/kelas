@@ -3,6 +3,7 @@ import java.lang.reflect.Type;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -20,33 +21,57 @@ public class KelasFields{
     /*
      * Basic field checks
      */
-    public KelasFields arePublic() {
-        this.stream.filter(f -> Modifier.isPublic(f.getModifiers()));
+    public KelasFields arePublic(boolean allowed) {
+        Predicate<Field> pred = allowed 
+            ? f -> Modifier.isPublic(f.getModifiers()) 
+            : f -> !Modifier.isPublic(f.getModifiers());
+        this.stream = this.stream.filter(pred);
         return this;
     }
 
-    public KelasFields arePrivate() {
-        this.stream.filter(f -> Modifier.isPrivate(f.getModifiers()));
+    public KelasFields arePrivate(boolean allowed) {
+        Predicate<Field> pred = allowed 
+            ? f -> Modifier.isPrivate(f.getModifiers()) 
+            : f -> !Modifier.isPrivate(f.getModifiers());
+        this.stream = this.stream.filter(pred);
         return this;
     }
 
-    public KelasFields areProtected() {
-        this.stream.filter(f -> Modifier.isProtected(f.getModifiers()));
+    public KelasFields areProtected(boolean allowed) {
+        Predicate<Field> pred = allowed 
+            ? f -> Modifier.isProtected(f.getModifiers()) 
+            : f -> !Modifier.isProtected(f.getModifiers());
+        this.stream = this.stream.filter(pred);
         return this;
     }
 
-    public KelasFields areStatic() {
-        this.stream.filter(f -> Modifier.isStatic(f.getModifiers()));
+    public KelasFields areStatic(boolean allowed) {
+        Predicate<Field> pred = allowed 
+            ? f -> Modifier.isStatic(f.getModifiers()) 
+            : f -> !Modifier.isStatic(f.getModifiers());
+        this.stream = this.stream.filter(pred);
         return this;
     }
 
-    public KelasFields areFinal() {
-        this.stream.filter(f -> Modifier.isFinal(f.getModifiers()));
+    public KelasFields areFinal(boolean allowed) {
+        Predicate<Field> pred = allowed 
+            ? f -> Modifier.isFinal(f.getModifiers()) 
+            : f -> !Modifier.isFinal(f.getModifiers());
+        this.stream = this.stream.filter(pred);
         return this;
     }
 
-    public KelasFields areEnum() {
-        this.stream.filter(f -> Enum.class.isAssignableFrom(f.getType()));
+    public KelasFields areEnum(boolean allowed) {
+        Predicate<Field> pred = allowed
+            ? f -> Enum.class.isAssignableFrom(f.getType())
+            : f -> !Enum.class.isAssignableFrom(f.getType());
+        this.stream = this.stream.filter(pred);
+        return this;
+    }
+
+    // For edge cases that require OR operations
+    public KelasFields filter(Predicate<Field> pred) {
+        this.stream = this.stream.filter(pred);
         return this;
     }
 
@@ -59,7 +84,7 @@ public class KelasFields{
      * @return KelasFields object to chain
      */
     public KelasFields haveName(String name) {
-        this.stream.filter(f -> f.getName().equals(name));
+        this.stream = this.stream.filter(f -> f.getName().equals(name));
         return this;
     }
 
@@ -69,7 +94,18 @@ public class KelasFields{
      * @return KelasFields object to chain
      */
     public KelasFields haveType(Class<?> type) {
-        this.stream.filter(f -> f.getType() == type);
+        this.stream = this.stream.filter(f -> f.getType() == type);
+        return this;
+    }
+
+    /**
+     * Filter fields with type
+     * @param type the type to check
+     * @return KelasFields object to chain
+     */
+    public KelasFields haveType(String className) throws ClassNotFoundException {
+        Kelas k = new Kelas(className);
+        this.stream = this.stream.filter(f -> f.getType().equals(k.getC()));
         return this;
     }
 
@@ -80,7 +116,7 @@ public class KelasFields{
      * @return KelasFields object to chain
      */
     public KelasFields haveType(Class<?> type, Type genericType) {
-        this.stream.filter(f -> {
+        this.stream = this.stream.filter(f -> {
             if (f.getType() == type) {
                 ParameterizedType currentType = (ParameterizedType) f.getGenericType();;
                 Type typeArgument = currentType.getActualTypeArguments()[0]; // Fix - handle misc number of generic types
@@ -101,7 +137,7 @@ public class KelasFields{
      * @return KelasFields object to chain
      */
     public <T> KelasFields haveTypeWithValue(Class<T> type, T value) {
-        this.stream.filter(f -> {
+        this.stream = this.stream.filter(f -> {
             try {
                 if (f.getType() == type && type.cast(f.get(null)).equals(value)) {
                     return true;
@@ -133,17 +169,25 @@ public class KelasFields{
      * @return Number of fields
      */
     public int count() {
-        return this.stream.collect(Collectors.toList()).size();
+        return (int)this.stream.count();
     }
+
+    /**
+     * Terminal operation. 
+     * Count if number of fields equals number
+     * @return Number of fields
+     */
+    public boolean countEquals(int number) {
+        return count() == number;
+    }
+
 
     /**
      * Terminal operation. 
      * Returns true if fields are absent. Returns false otherwise.
      */
     public boolean areAbsent() {
-        return this.stream
-                    .collect(Collectors.toList())
-                    .isEmpty();
+        return count() == 0;
     }
 
     /**

@@ -12,7 +12,7 @@ import java.util.stream.Stream;
  * Created to help with grading of CS2030 homework.
  */
 
-class Kelas {
+public class Kelas {
     // c is the Java Class object we wrap around.
     private Class<?> c;
 
@@ -158,6 +158,10 @@ class Kelas {
         return c.toString();
     }
 
+    public Class getC() {
+        return c;
+    }
+    
     public boolean equals(Kelas k2) {
         return c.equals(k2.c);
     }
