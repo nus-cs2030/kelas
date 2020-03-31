@@ -85,7 +85,7 @@ public class Kelas {
         return false;
     }
 
-    public boolean implements(String Interface) {
+    public boolean isImplemented(String Interface) {
 
         if (this.c.getSuperclass().equals(Object.class)) {
             return false;
