@@ -21,48 +21,48 @@ public class KelasMethods {
      * Basic method checks
      */
     public KelasMethods arePublic(boolean allowed) {
-        Predicate<Method> pred = allowed 
-            ? m -> Modifier.isPublic(m.getModifiers()) 
+        Predicate<Method> pred = allowed
+            ? m -> Modifier.isPublic(m.getModifiers())
             : m -> !Modifier.isPublic(m.getModifiers());
         this.stream = this.stream.filter(pred);
         return this;
     }
 
     public KelasMethods arePrivate(boolean allowed) {
-        Predicate<Method> pred = allowed 
-            ? m -> Modifier.isPrivate(m.getModifiers()) 
+        Predicate<Method> pred = allowed
+            ? m -> Modifier.isPrivate(m.getModifiers())
             : m -> !Modifier.isPrivate(m.getModifiers());
         this.stream = this.stream.filter(pred);
         return this;
     }
 
     public KelasMethods areProtected(boolean allowed) {
-        Predicate<Method> pred = allowed 
-            ? m -> Modifier.isProtected(m.getModifiers()) 
+        Predicate<Method> pred = allowed
+            ? m -> Modifier.isProtected(m.getModifiers())
             : m -> !Modifier.isProtected(m.getModifiers());
         this.stream = this.stream.filter(pred);
         return this;
     }
 
     public KelasMethods areAbstract(boolean allowed) {
-        Predicate<Method> pred = allowed 
-            ? m -> Modifier.isAbstract(m.getModifiers()) 
+        Predicate<Method> pred = allowed
+            ? m -> Modifier.isAbstract(m.getModifiers())
             : m -> !Modifier.isAbstract(m.getModifiers());
         this.stream = this.stream.filter(pred);
         return this;
     }
 
     public KelasMethods areStatic(boolean allowed) {
-        Predicate<Method> pred = allowed 
-            ? m -> Modifier.isStatic(m.getModifiers()) 
+        Predicate<Method> pred = allowed
+            ? m -> Modifier.isStatic(m.getModifiers())
             : m -> !Modifier.isStatic(m.getModifiers());
         this.stream = this.stream.filter(pred);
         return this;
     }
 
     public KelasMethods areFinal(boolean allowed) {
-        Predicate<Method> pred = allowed 
-            ? m -> Modifier.isFinal(m.getModifiers()) 
+        Predicate<Method> pred = allowed
+            ? m -> Modifier.isFinal(m.getModifiers())
             : m -> !Modifier.isFinal(m.getModifiers());
         this.stream = this.stream.filter(pred);
         return this;
@@ -75,8 +75,8 @@ public class KelasMethods {
     }
 
     /*
-    * Have methods
-    */
+     * Have methods
+     */
     /**
      * Check if methods have name
      * @param name the name to check
@@ -101,7 +101,7 @@ public class KelasMethods {
      * Terminal
      */
     /**
-     * Terminal operation. 
+     * Terminal operation.
      * Collects the methods into a List.
      * @return List of methods
      */
@@ -110,7 +110,7 @@ public class KelasMethods {
     }
 
     /**
-     * Terminal operation. 
+     * Terminal operation.
      * Count the number of methods.
      * @return Number of methods
      */
@@ -119,7 +119,7 @@ public class KelasMethods {
     }
 
     /**
-     * Terminal operation. 
+     * Terminal operation.
      * Returns true if methods are absent. Returns false otherwise.
      */
     public boolean areAbsent() {
@@ -127,7 +127,7 @@ public class KelasMethods {
     }
 
     /**
-     * Terminal operation. 
+     * Terminal operation.
      * Returns true if methods are present. Returns false otherwise.
      */
     public boolean arePresent() {

@@ -71,12 +71,24 @@ public class Kelas {
     }
 
     public boolean isChildOf(String Parent) throws ClassNotFoundException {
+
         if (this.c.getSuperclass().equals(Object.class)) {
             return false;
         }
+
         Class<?> parentClass = Class.forName(Parent);
+
         if (this.c.getSuperclass().equals(parentClass)) {
             return true;
+        }
+
+        return false;
+    }
+
+    public boolean implements(String Interface) {
+
+        if (this.c.getSuperclass().equals(Object.class)) {
+            return false;
         }
 
         for (Class<?> ifs1 : this.c.getInterfaces()) {
@@ -84,8 +96,22 @@ public class Kelas {
                 return true;
             }
         }
+
         return false;
     }
+
+    public List<Class<?>> getCommonInterfacesWith(Kelas that) {
+        List<Class<?>> list = new ArrayList<>();
+        for (Class<?> ifs1 : this.c.getInterfaces()) {
+            for (Class<?> ifs2 : that.c.getInterfaces()) {
+                if (ifs1.equals(ifs2)) {
+                    list.add(ifs1);
+                }
+            }
+        }
+        return list
+    }
+
 
     /**
      * Return all (immediate) parent supertype with another class.
@@ -95,19 +121,16 @@ public class Kelas {
      * @return A list of Class objects.
      */
     public List<Class<?>> getCommonSupertypeWith(Kelas that) {
+
         List<Class<?>> list = new ArrayList<>();
+
         if (this.c.getSuperclass().equals(that.c.getSuperclass()) &&
                 !this.c.getSuperclass().equals(Object.class)) {
             list.add(this.c.getSuperclass());
         }
 
-        for (Class<?> ifs1 : this.c.getInterfaces()) {
-            for (Class<?> ifs2 : that.c.getInterfaces()) {
-                if (ifs1.equals(ifs2)) {
-                    list.add(ifs1);
-                }
-            }
-        }
+        list.addAll(self.getCommonInterfacesWith(that))
+
         return list;
     }
 
@@ -119,21 +142,8 @@ public class Kelas {
      * @return true if a shared parent is found; false otherwise.
      */
     public boolean shareCommonSupertypeWith(Kelas ac) {
-        if (this.c.getSuperclass().equals(Object.class)) {
-            return false;
-        }
-        if (this.c.getSuperclass().equals(ac.c.getSuperclass())) {
-            return true;
-        }
-
-        for (Class<?> ifs1 : this.c.getInterfaces()) {
-            for (Class<?> ifs2 : ac.c.getInterfaces()) {
-                if (ifs1.equals(ifs2)) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        List<Class<?>> commonSupertypes = this.getCommonSupertypeWith(ac);
+        return commonSupertypes.size() > 0;
     }
 
 
@@ -144,8 +154,8 @@ public class Kelas {
      * @param typeArgument The fully qualified name of the typeArgument
      * @return true if the class imlpements the interface; false otherwise.
      */
-    public boolean doesImplementGenericInterface(String name) {
-        Type[] parents = this.c.getGenericInterfaces();
+    public boolean implementsInterface(String name) {
+        Type[] parents = this.c.getInterfaces();
         for (Type ifs : parents) {
             if (ifs.getTypeName().equals(name)) {
                 return true;
@@ -161,7 +171,7 @@ public class Kelas {
     public Class<?> getC() {
         return c;
     }
-    
+
     public boolean equals(Kelas k2) {
         return c.equals(k2.c);
     }
