@@ -31,7 +31,7 @@ class KelasUtils {
      * Check for common parent
      */
     public static Check checkCommonParent(String name1, String name2)
-            throws ClassNotFoundException {
+        throws ClassNotFoundException {
         Boolean pass = false;
 
         Kelas k1 = new Kelas(name1);
@@ -53,24 +53,16 @@ class KelasUtils {
         return new Check(isChildOf, child + " does not inherit from " + parent + ".");
     }
 
-    // public static Check mustNotHaveOnlyInterfaceAsParent(String name1, String name2)
-    // throws ClassNotFoundException {
-    //     Kelas k1 = new Kelas(name1);
-    //     Kelas k2 = new Kelas(name2);
+    public static Check mustNotHaveOnlyInterfaceAsParent(String name1, String name2)
+        throws ClassNotFoundException {
+        Kelas k1 = new Kelas(name1);
+        Kelas k2 = new Kelas(name2);
 
-    //     boolean foundClass = false;
-    //     if (k1.shareCommonSupertypeWith(k2)) {
-    //         // Check if common parent of cab and car consists of only interfaces (should not)
-    //         List<Class<?>> list = k1.getCommonSupertypeWith(k2);
-    //         for (Class<?> c : list) {
-    //             if (!new Kelas(c).isInterface()) {
-    //                 foundClass = true;
-    //                 break;
-    //             }
-    //         }
-    //     }
-    //     return new Check(foundClass, name1 + " and " + name2 + " both implement an interface.");
-    // }
+        boolean foundClass = k1.getCommonInterfacesWith(k2).size() == k1.getCommonSupertypeWith(k2)
+            ? false : true;
+
+        return new Check(foundClass, name1 + " and " + name2 + " only have common interface.");
+    }
 
     // public static void mustHaveProperAbstractClassAsParent(String name1, String name2)
     //         throws ClassNotFoundException {
