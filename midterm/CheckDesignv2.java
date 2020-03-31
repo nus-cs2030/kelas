@@ -1,3 +1,5 @@
+package midterm;
+
 import java.util.List;
 
 
@@ -38,7 +40,7 @@ import java.util.List;
    - [x] must contain Collection<Case> or Map field
 */
 
-class CheckDesign {
+class CheckDesign2 {
     
     public static void main(String[] args) {
         Boolean success = false;
@@ -64,8 +66,9 @@ class CheckDesign {
         try {
             // Case
             Kelas caseClass = new Kelas("Case");
-            success &= caseClass.getFields().haveType(int.class).countEquals(1);
-            success &= caseClass.getFields().haveType()
+            success &= caseClass.getFields().haveType(int.class).countEquals(1) 
+                    ^  caseClass.getFields().haveType(java.lang.Integer.class).countEquals(1);
+
 
             success &= (Pakej.mustDefineNFieldsOfType("Case",int.class,1) ^ Pakej.mustDefineNFieldsOfType("Case","java.lang.Integer",1));
 

@@ -100,7 +100,7 @@ public class KelasFields{
 
     /**
      * Filter fields with type
-     * @param type the type to check
+     * @param className the class name to check
      * @return KelasFields object to chain
      */
     public KelasFields haveType(String className) throws ClassNotFoundException {

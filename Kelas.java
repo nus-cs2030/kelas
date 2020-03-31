@@ -158,7 +158,7 @@ public class Kelas {
         return c.toString();
     }
 
-    public Class getC() {
+    public Class<?> getC() {
         return c;
     }
     
