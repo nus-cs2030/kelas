@@ -7,7 +7,7 @@ lab=$1
 javac src/*.java -d $lab
 
 # Compile CheckDesign.java file
-javac $lab/CheckDesign.java -d $lab
+javac $lab/CheckDesign.java -d $lab -classpath $lab
 
 # run check for each submission
 for f in $lab/*; do

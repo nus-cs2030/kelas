@@ -117,6 +117,10 @@ public class Kelas {
         return list;
     }
 
+    public boolean commonParent(Kelas that) {
+        return this.c.getSuperclass().equals(that.c.getSuperclass());
+    }
+
     public List<Class<?>> getCommonInterfacesWith(Kelas that) {
         List<Class<?>> list = new ArrayList<>();
         for (Class<?> ifs1 : this.c.getInterfaces()) {

@@ -30,26 +30,38 @@ class CheckDesign {
                 "Loader");
 
         // Preliminary checks
-        Pakej.checkIfClassesExist(classes);
+        // Pakej.checkIfClassesExist(classes);
 
         // Main checks
         try {
             // Cruise
-            Pakej.mustHavePrivateAndFinalFields("Cruise");
-            Pakej.mustHaveCommonParent("SmallCruise", "BigCruise");
+            Kelas cruise = new Kelas("Cruise");
+            if (cruise.getFields().arePrivate(true).areFinal(true).count() != cruise.getFields().count()) {
+                System.out.println("Cruise contains fields that are not private AND final");
+            }
 
-            // Loader
-            Pakej.mustHavePrivateAndFinalFields("Loader");
-            Pakej.mustNotHaveExtraMethods("Loader", "serve", "canServe");
+            if (!KelasUtils.checkCommonParent("SmallCruise", "BigCruise").passed()) {
+                if (!KelasUtils.checkChildOf("SmallCruise","Cruise").passed()) {
+                    System.out.println("SmallCruise and BigCruise do not have Cruise as common parent");
+                }
+            }
 
-            // SmallCruise
-            Pakej.mustBeChildOf("SmallCruise", "Cruise");
-            Pakej.mustDefinePrivateIntConstantWithValues("SmallCruise", 1, 30);
+            // Pakej.mustHavePrivateAndFinalFields("Cruise");
+            // Pakej.mustHaveCommonParent("SmallCruise", "BigCruise");
 
-            // BigCruise
-            Pakej.mustBeChildOf("BigCruise", "Cruise");
-            Pakej.mustDefinePrivateIntConstantWithValues("BigCruise", 40, 50);
+            // // Loader
+            // Pakej.mustHavePrivateAndFinalFields("Loader");
+            // Pakej.mustNotHaveExtraMethods("Loader", "serve", "canServe");
+
+            // // SmallCruise
+            // Pakej.mustBeChildOf("SmallCruise", "Cruise");
+            // Pakej.mustDefinePrivateIntConstantWithValues("SmallCruise", 1, 30);
+
+            // // BigCruise
+            // Pakej.mustBeChildOf("BigCruise", "Cruise");
+            // Pakej.mustDefinePrivateIntConstantWithValues("BigCruise", 40, 50);
         } catch (ClassNotFoundException e) {
+            // System.out.println(e);
 
         }
 

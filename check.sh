@@ -22,6 +22,9 @@ do
 	ln -s ../$i.class .
 done
 
+# Compile all files
+javac *.java
+
 # Run CheckDesign
 java CheckDesign | tee $userid.design-bug.txt
 
@@ -29,4 +32,4 @@ java CheckDesign | tee $userid.design-bug.txt
 rm *.class
 
 # Go back up one level
-cd -
+cd ..
