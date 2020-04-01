@@ -47,8 +47,9 @@ class KelasUtils {
      * Check for child
      */
     public static Check checkChildOf(String child, String parent) throws ClassNotFoundException {
-        Kelas k1 = new Kelas(child);
-        Boolean isChildOf = k1.isChildOf(parent);
+        Kelas kChild = new Kelas(child);
+        Kelas kParent = new Kelas(parent);
+        boolean isChildOf = kChild.doesExtend(kParent);
 
         return new Check(isChildOf, child + " does not inherit from " + parent + ".");
     }
