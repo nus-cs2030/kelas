@@ -1,2 +1,4 @@
 *.class
 *.design-bug.txt
+*.iml
+.idea/

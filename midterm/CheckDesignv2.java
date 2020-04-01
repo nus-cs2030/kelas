@@ -66,8 +66,8 @@ class CheckDesign2 {
         try {
             // Case
             Kelas caseClass = new Kelas("Case");
-            success &= caseClass.getFields().haveType(int.class).countEquals(1) 
-                    ^  caseClass.getFields().haveType(java.lang.Integer.class).countEquals(1);
+            success &= caseClass.getFields().arePublic(false).haveType(int.class).countEquals(1) 
+                    ^  caseClass.getFields().arePublic(false).haveType(java.lang.Integer.class).countEquals(1);
 
 
             success &= (Pakej.mustDefineNFieldsOfType("Case",int.class,1) ^ Pakej.mustDefineNFieldsOfType("Case","java.lang.Integer",1));
