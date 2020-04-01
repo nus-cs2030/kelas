@@ -85,11 +85,13 @@ public class Kelas {
         return false;
     }
 
-    public boolean implements(String Interface) {
+    public boolean isImplemented(String Interface) throws ClassNotFoundException {
 
         if (this.c.getSuperclass().equals(Object.class)) {
             return false;
         }
+
+        Class<?> parentClass = Class.forName(Interface);
 
         for (Class<?> ifs1 : this.c.getInterfaces()) {
             if (ifs1.equals(parentClass)) {
@@ -109,7 +111,7 @@ public class Kelas {
                 }
             }
         }
-        return list
+        return list;
     }
 
 
@@ -129,7 +131,7 @@ public class Kelas {
             list.add(this.c.getSuperclass());
         }
 
-        list.addAll(self.getCommonInterfacesWith(that))
+        list.addAll(this.getCommonInterfacesWith(that));
 
         return list;
     }
