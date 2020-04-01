@@ -1,14 +1,13 @@
 #!/bin/bash
+
 # get lab parameter
 lab=$1
 
-# compile once
-javac Kelas.java
-javac Pakej.java
-javac $lab/CheckDesign.java
+# Compile src files
+javac src/*.java -d $lab
 
-mv Kelas.class $lab
-mv Pakej.class $lab
+# Compile CheckDesign.java file
+javac $lab/CheckDesign.java -d $lab
 
 # run check for each submission
 for f in $lab/*; do
@@ -20,6 +19,5 @@ for f in $lab/*; do
     fi
 done
 
-# cleanup compilation
+# cleanup class files
 rm $lab/*.class
-cd ..

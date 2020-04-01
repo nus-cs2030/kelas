@@ -1,20 +1,32 @@
 #!/bin/bash
 
-MYFILES="Kelas.class CheckDesign.class Pakej.class"
+# Required files for autograding
+REQUIRED="Check Kelas KelasFields KelasMethods KelasUtils CheckDesign"
+
+# Lab folder path
 lab=$1
+
+# Submission/student id
 target=$2
 
+# cd into student submission folder
 cd $target
 
-javac *.java
-for i in $MYFILES
+# Symlink all compiled class files into directory
+for i in $REQUIRED
 do
-	if [ -e $i ]
+	if [ -e ${i}.class ]
 	then
-		rm $i
+		rm ${i}.class
 	fi
-	ln -s ../$i .
+	ln -s ../$i.class .
 done
 
+# Run CheckDesign
 java CheckDesign | tee $userid.design-bug.txt
+
+# Remove all symlinks
 rm *.class
+
+# Go back up one level
+cd -
