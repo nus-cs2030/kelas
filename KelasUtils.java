@@ -58,7 +58,7 @@ class KelasUtils {
         Kelas k1 = new Kelas(name1);
         Kelas k2 = new Kelas(name2);
 
-        boolean foundClass = k1.getCommonInterfacesWith(k2).size() == k1.getCommonSupertypeWith(k2)
+        boolean foundClass = k1.getCommonInterfacesWith(k2).size() == k1.getCommonSupertypeWith(k2).size()
             ? false : true;
 
         return new Check(foundClass, name1 + " and " + name2 + " only have common interface.");
